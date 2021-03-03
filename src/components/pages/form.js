@@ -4,6 +4,7 @@ import formComponents from '../../bootstrap-vue-dynamic-form/index.js'
 export default {
   data: () => {
     return {
+      submitting: false,
       formdata: {},
       origData: null
     }
@@ -16,12 +17,12 @@ export default {
   created () {
     if (this.$props.item) {
       Object.assign(this.$data.formdata, this.$props.item)
-      // this.$data.due = moment(this.$data.due).format('YYYY-MM-DD')
     }
   },
   props: ['item', 'config', 'onSubmit'],
   methods: {
     handleSubmit () {
+      this.$data.submitting = true
       this.$props.onSubmit(this.$data.formdata)
     },
     cancel () {
@@ -37,12 +38,13 @@ export default {
         :is="c.component" :config="c" :data="formdata">
       </component>
 
-      <b-button type="submit" class="mt-3" :disabled="invalid">
+      <b-button type="submit" class="mt-3" :disabled="invalid || submitting">
         Uložit
       </b-button>
       <b-button class="mt-3" @click="cancel">
         Storno
       </b-button>
+      <i v-if="submitting" class="fas fa-spinner"></i>
     </form>
   </ValidationObserver>
   `

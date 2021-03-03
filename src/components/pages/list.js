@@ -24,11 +24,15 @@ export default {
       item: {}
     }
   },
-  props: ['entity', 'label'],
+  props: ['url', 'conf', 'label', 'prepareData'],
   async created () {
     // console.log(this.$store.getters.UID);
-    const res = await axios.get(`${API}/_${this.$props.entity}/config.json`)
-    this.$data.formconfig = res.data.attrs
+    if (_.isString(this.$props.conf)) {
+      const res = await axios.get(this.$props.conf)
+      this.$data.formconfig = res.data.attrs
+    } else {
+      this.$data.formconfig = this.$props.conf
+    }    
     this.$data.ready = true
   },
   computed: {
@@ -60,7 +64,7 @@ export default {
         sort: ctx.sortBy ? `${ctx.sortBy}:${ctx.sortDesc ? 'desc' : 'asc'}` : 'id:asc'
       }
       let data = null
-      return axios.get(`${API}/${this.$props.entity}`, { params })
+      return axios.get(this.$props.url, { params })
         .then(res => {
           this.totalRows = res.data.pagination.total
             ? res.data.pagination.total
@@ -89,9 +93,10 @@ export default {
       if (!item) return this.$bvModal.hide('modal-add')
       try {
         const cfg = { headers: { 'Authorization': 'Bearer fjsdlkfjsl' }}
+        item = this.$props.prepareData ? await this.$props.prepareData(item) : item
         const res = this.curr
-          ? await axios.put(`${API}/${this.$props.entity}/${this.curr.id}`, item, cfg)
-          : await axios.post(`${API}/${this.$props.entity}`, item, cfg)
+          ? await axios.put(`${this.$props.url}${this.curr.id}`, item, cfg)
+          : await axios.post(this.$props.url, item, cfg)
         this.curr
           ? Object.assign(this.curr, res.data)
           : this.$refs.table.refresh()
