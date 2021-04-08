@@ -27,6 +27,9 @@ export default {
             <router-link class="nav-link" to="/events">Události</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/ts_places">Místa</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/files">Soubory</router-link>
           </li>
         </ul>
