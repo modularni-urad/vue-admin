@@ -21,6 +21,12 @@ const PostList = {
     <EditList label="Článečky"
       url="${API}/posts/" conf="${API}/_posts/config.json" />`
 }
+const TSPlaceList = {
+  components: { EditList },
+  template: `
+    <EditList label="Místa"
+      url="${API}/ts_places/" conf="${API}/_ts_places/config.json" />`
+}
 const FileList = {
   data: () => { return { formCfg } },
   methods: { prepareFileFormData },
@@ -35,7 +41,8 @@ const router = new VueRouter({
     { path: '/', component: Dashboard, name: 'home' },
     { path: '/events', component: EventList, name: 'event_list' },
     { path: '/posts', component: PostList, name: 'post_list' },
-    { path: '/files', component: FileList, name: 'file_list' }
+    { path: '/files', component: FileList, name: 'file_list' },
+    { path: '/ts_places', component: TSPlaceList, name: 'ts_place_list' }
   ]
 })
 
