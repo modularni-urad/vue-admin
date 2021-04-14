@@ -9,10 +9,18 @@ function formatDate (value) {
   }
 }
 
+const DefaultActions = {
+  props: ['data', 'doEdit'],
+  template: `
+  <b-button size="sm" variant="primary" @click="doEdit(data.item)">
+    <i class="fas fa-edit"></i> upravit
+  </b-button>
+  `
+}
+
 export default {
   data: () => {
     return {
-      items: [],
       formconfig: null,
       ready: false,
       isBusy: false,
@@ -24,7 +32,7 @@ export default {
       item: {}
     }
   },
-  props: ['url', 'conf', 'label', 'prepareData'],
+  props: ['url', 'conf', 'label', 'prepareData', 'actionsComponent'],
   async created () {
     // console.log(this.$store.getters.UID);
     if (_.isString(this.$props.conf)) {
@@ -107,7 +115,7 @@ export default {
     }
   },
   components: {
-    'item-form': ItemForm
+    'item-form': ItemForm, DefaultActions
   },
   template
 }

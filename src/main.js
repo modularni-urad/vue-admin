@@ -4,36 +4,11 @@ import './vuecustoms.js'
 import Store from './store.js'
 
 import Login from './components/pages/auth/login.js'
+// import cardpreviews from './components/previews.js'
+// Vue.component('cardpreviews', cardpreviews)
 
 import Dashboard from './components/pages/dashboard.js'
-import EditList from './components/pages/list.js'
-import { formCfg, prepareFileFormData } from './components/fileForm.js'
-
-const EventList = {
-  components: { EditList },
-  template: `
-    <EditList label="Události" 
-      url="${API}/events/" conf="${API}/_events/config.json" />`
-}
-const PostList = {
-  components: { EditList },
-  template: `
-    <EditList label="Článečky"
-      url="${API}/posts/" conf="${API}/_posts/config.json" />`
-}
-const TSPlaceList = {
-  components: { EditList },
-  template: `
-    <EditList label="Místa"
-      url="${API}/ts_places/" conf="${API}/_ts_places/config.json" />`
-}
-const FileList = {
-  data: () => { return { formCfg } },
-  methods: { prepareFileFormData },
-  components: { EditList },
-  template: `<EditList label="Soubory" url="http://test.vxk.cz/cdn/" 
-      :conf="formCfg" :prepareData="prepareFileFormData" />`
-}
+import { EventList, PostList, FileList, TSPlaceList } from './components/editlists.js'
 
 const router = new VueRouter({
   routes: [

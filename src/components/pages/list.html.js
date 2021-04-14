@@ -20,15 +20,8 @@ export default `
     :items="myProvider"
     :fields="fields"
   >
-    <template v-slot:cell(nazev)="data">
-      <a href="javascript:void(0)" v-on:click="edit(data.item)">
-        {{ data.item.nazev }}
-      </a>
-    </template>
-    <template v-slot:cell(actions)="data">
-      <b-button size="sm" variant="primary" @click="edit(data.item)">
-        <i class="fas fa-edit"></i> upravit
-      </b-button>
+    <template #cell(actions)="data">
+      <div :is="actionsComponent || 'DefaultActions'" :data="data" :doEdit="edit" />
     </template>
   </b-table>
 
