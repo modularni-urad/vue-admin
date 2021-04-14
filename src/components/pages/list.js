@@ -9,6 +9,11 @@ function formatDate (value) {
   }
 }
 
+const getOptionsFormatter = (options) => (value) => {
+  const o = _.find(options, i => i.value === value)
+  return o ? o.text : value
+}
+
 const DefaultActions = {
   props: ['data', 'doEdit'],
   template: `
@@ -40,7 +45,21 @@ export default {
       this.$data.formconfig = res.data.attrs
     } else {
       this.$data.formconfig = this.$props.conf
-    }    
+    }
+    const promises = _.reduce(this.$data.formconfig, (acc, i) => {
+      if (i.options && _.isString(i.options)) {
+        acc.push(axios.get(i.options).then(res => {
+          i.options = i.attrmap ? res.data.map(j => {
+            return {
+              text: j[i.attrmap.text || 'text'],
+              value: j[i.attrmap.value || 'value']
+            }
+          }) : res.data            
+        }))
+      }
+      return acc
+    }, [])
+    if (promises.length) await Promise.all(promises)
     this.$data.ready = true
   },
   computed: {
@@ -53,6 +72,9 @@ export default {
           key: i.name,
           label: i.label,
           sortable: true
+        }
+        if (i.options) {
+          f.formatter = getOptionsFormatter(i.options)
         }
         if (i.type === 'date') {
           f.formatter = formatDate
