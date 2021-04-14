@@ -4,6 +4,8 @@ import './vuecustoms.js'
 import Store from './store.js'
 
 import Login from './components/pages/auth/login.js'
+import FileUploadingSelect from './components/file_uploading_select.js'
+Vue.component('FileUploadingSelect', FileUploadingSelect)
 // import cardpreviews from './components/previews.js'
 // Vue.component('cardpreviews', cardpreviews)
 
