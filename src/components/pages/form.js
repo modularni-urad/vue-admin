@@ -2,21 +2,19 @@
 import formComponents from '../../bootstrap-vue-dynamic-form/index.js'
 
 export default {
-  data: () => {
+  data: function () {
     return {
       submitting: false,
-      formdata: {},
+      formdata: _.reduce(this.$props.config, (acc, i) => {
+        acc[i.name] = this.$props.item ? this.$props.item[i.name] : null
+        return acc
+      }, {}),
       origData: null
     }
   },
   computed: {
     disabled: function () {
       return this.$props.item && this.$store.getters.UID !== this.$props.item.manager
-    }
-  },
-  created () {
-    if (this.$props.item) {
-      Object.assign(this.$data.formdata, this.$props.item)
     }
   },
   props: ['item', 'config', 'onSubmit'],
