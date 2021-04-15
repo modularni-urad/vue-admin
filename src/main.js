@@ -12,6 +12,13 @@ Vue.component('FileUploadingSelect', FileUploadingSelect)
 import Dashboard from './components/pages/dashboard.js'
 import { EventList, PostList, FileList, TSPlaceList } from './components/editlists.js'
 
+import WebEditor from './components/webeditor/index.js'
+export const MyWebEditor = {
+  components: { WebEditor },
+  template: `
+    <WebEditor url="http://tsprod.vxk.cz/api/taborskasetkani.eu/" />`
+}
+
 const router = new VueRouter({
   routes: [
     { path: '/login', component: Login },
@@ -19,7 +26,8 @@ const router = new VueRouter({
     { path: '/events', component: EventList, name: 'event_list' },
     { path: '/posts', component: PostList, name: 'post_list' },
     { path: '/files', component: FileList, name: 'file_list' },
-    { path: '/ts_places', component: TSPlaceList, name: 'ts_place_list' }
+    { path: '/ts_places', component: TSPlaceList, name: 'ts_place_list' },
+    { path: '/web', component: MyWebEditor, name: 'webeditor' }
   ]
 })
 

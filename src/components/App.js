@@ -21,6 +21,9 @@ export default {
             <router-link class="nav-link" to="/">Domů</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/web">Web</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/posts">Clanky</router-link>
           </li>
           <li class="nav-item">
