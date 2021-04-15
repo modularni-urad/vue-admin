@@ -4,7 +4,6 @@ import { prepareFileFormData } from './fileForm.js'
 export default {
   data: () => {
     return {
-      original: null,
       visible: false,
       uploading: false
     }
@@ -35,7 +34,8 @@ export default {
       this.$data.uploading = false
     },
     onSelect: function (url) {
-      this.$props.data.value = url
+      this.$bvModal.hide('modal-search')
+      this.$props.data[this.$props.config.name] = url
     }
   },
   components: { storageBrowser },
@@ -55,7 +55,7 @@ export default {
         :disabled="disabled">
       </b-form-input>
       <div class="input-group-prepend">
-        <b-button disabled variant="primary" @click="search()">
+        <b-button variant="primary" v-b-modal.modal-search>
           <i class="fas fa-search"></i>
         </b-button>
         <b-button variant="secondary" v-b-modal.modal-upload>
@@ -65,8 +65,8 @@ export default {
     </div>
   </b-form-group>
 
-  <b-modal v-if="visible" size="xl" id="modal-search" title="Vyhledat v úložišti">
-    <storageBrowser :onSelect="onSelect" />
+  <b-modal size="lg" id="modal-search" title="Vyhledat v úložišti">
+    <storageBrowser url="http://test.vxk.cz/cdn/" :onSelect="onSelect" />
   </b-modal>
   <b-modal id="modal-upload" title="Nahrát do úložiště" hide-footer>
     <b-form-file @input="onFileSelected" 
