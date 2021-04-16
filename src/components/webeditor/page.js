@@ -1,11 +1,5 @@
 /* global axios, API, _ */
 export default {
-  data: () => {
-    return {
-      ready: false,
-      data: null,
-    }
-  },
   props: ['data', 'nodeSelect'],
   computed: {
     treeData: function () {
@@ -49,6 +43,8 @@ export default {
   },
   template: `
   <div>
+    <h2>{{ data.title }}</h2>
+    <p>{{ data.desc }}</p>
     <b-tree-view showIcons nodesDraggable
       :renameNodeOnDblClick="false"
       nodeLabelProp="component" 

@@ -62,6 +62,10 @@ export default function (router) {
           this.dispatch('toast', { message, type: 'error' })
         }
       },
+      send: function (ctx, opts) {
+        opts.headers = { 'Authorization': 'Bearer fjsdlkfjsl' }
+        return axios(opts)
+      },
       init: async function (ctx, opts) {
         try {
           const res = await axios.get(`${API}/profile`)

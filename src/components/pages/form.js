@@ -19,9 +19,10 @@ export default {
   },
   props: ['item', 'config', 'onSubmit'],
   methods: {
-    handleSubmit () {
+    handleSubmit: async function () {
       this.$data.submitting = true
-      this.$props.onSubmit(this.$data.formdata)
+      await this.$props.onSubmit(this.$data.formdata)
+      this.$data.submitting = false
     },
     cancel () {
       this.$props.onSubmit() // just call
@@ -42,7 +43,7 @@ export default {
       <b-button class="mt-3" @click="cancel">
         Storno
       </b-button>
-      <i v-if="submitting" class="fas fa-spinner"></i>
+      <i v-if="submitting" class="fas fa-spinner fa-spin"></i>
     </form>
   </ValidationObserver>
   `
