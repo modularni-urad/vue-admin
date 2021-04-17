@@ -16,7 +16,6 @@ export default {
     onFileSelected: async function (file) {
       this.$data.uploading = true
       try {
-        const cfg = { headers: { 'Authorization': 'Bearer fjsdlkfjsl' }}
         const title = this.$props.data[this.$props.config.upload_titleattr]
         let data = { 
           nazev: `${title} - ${this.$props.config.upload_title || 'title'}`, 
@@ -24,7 +23,9 @@ export default {
           file
         }
         data = await prepareFileFormData(data)
-        const req = await axios.post(this.$props.config.upload_url, data, cfg)
+        url = this.$props.config.upload_url
+        await this.$store.dispatch('send', { method: 'post', url, data })
+        this.$store.dispatch('toast', { message: 'uloženo' })
         this.$bvModal.hide('modal-upload')
         this.$props.data[this.$props.config.name] = 
           `${this.$props.config.upload_url}file/${req.data.id}/${req.data.filename}`

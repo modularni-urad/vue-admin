@@ -23,6 +23,7 @@ export const formCfg = [
 ]
 
 export async function prepareFileFormData(data) {
+  if (!data.file) return data
   const content = await loadAsBase64(data.file)
   data.file = _.pick(data.file, 'type', 'name')
   data.file.content = content

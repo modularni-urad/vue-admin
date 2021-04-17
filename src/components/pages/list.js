@@ -121,18 +121,20 @@ export default {
     },
     onSubmit: async function (item) {
       if (!item) return this.$bvModal.hide('modal-add')
+      const p = this.$props
       try {
-        const cfg = { headers: { 'Authorization': 'Bearer fjsdlkfjsl' }}
-        item = this.$props.prepareData ? await this.$props.prepareData(item) : item
-        const res = this.curr
-          ? await axios.put(`${this.$props.url}${this.curr.id}`, item, cfg)
-          : await axios.post(this.$props.url, item, cfg)
+        const data = p.prepareData ? await p.prepareData(item) : item
+        const url = this.curr ? `${p.url}${this.curr.id}` : p.url
+        const method = this.curr ? 'put' : 'post'
+        const res = await this.$store.dispatch('send', { method, url, data })
+        this.$store.dispatch('toast', { message: 'uloženo' })
         this.curr
           ? Object.assign(this.curr, res.data)
           : this.$refs.table.refresh()
         this.$bvModal.hide('modal-add')
       } catch (err) {
-        console.log(err)
+        const message = err.response.data
+        this.$store.dispatch('toast', { message, type: 'error' })
       }
     }
   },
