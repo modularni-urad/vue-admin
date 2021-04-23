@@ -67,7 +67,9 @@ export default {
   </b-form-group>
 
   <b-modal size="lg" id="modal-search" title="Vyhledat v úložišti">
-    <storageBrowser url="http://test.vxk.cz/cdn/" :onSelect="onSelect" />
+    <storageBrowser :onSelect="onSelect"
+      url="http://test.vxk.cz/cdn/" 
+      tagurl="http://test.vxk.cz/api/ts_places" />
   </b-modal>
   <b-modal id="modal-upload" title="Nahrát do úložiště" hide-footer>
     <b-form-file @input="onFileSelected" 

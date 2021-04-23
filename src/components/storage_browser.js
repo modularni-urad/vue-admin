@@ -1,12 +1,23 @@
+import formComponents from '../../bootstrap-vue-dynamic-form/index.js'
+
 export default {
   data: () => {
     return {
       found: [],
+      formconfig: {
+        name: 'tags',
+        options: null,
+        attrmap: { value: "id", text: "title" }
+      },
+      filter: {
+        tags: ''
+      },
       loading: true
     }
   },
-  props: ['url', 'data', 'onSelect'],
+  props: ['url', 'tagurl', 'data', 'onSelect'],
   async created () {
+    this.$data.formconfig.options = this.$props.tagurl
     const filter = {
       ctype: { like: 'image%' }
     }
@@ -22,11 +33,13 @@ export default {
       return `${this.$props.url}file/${i.id}/${i.filename}`
     }
   },
+  components: formComponents,
   template: `
   <div>
+    <dyn-taginput :config="formconfig" :data="filter" />
     <i v-if="loading" class="fas fa-spinner fa-spin"></i>
     <div v-else class="d-flex flex-row">
-      <img v-for="i in found" 
+      <img class="img-thumbnail img-fluid" v-for="i in found" 
         :src="imgURL(i)" :alt="i.nazev" 
         style="width: 8em;"
         @click="onSelect(imgURL(i))" />
