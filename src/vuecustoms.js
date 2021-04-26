@@ -15,6 +15,9 @@ Vue.filter('longDate', function (value) {
   }
 })
 
+import FileUploadingSelect from './components/file_uploading_select.js'
+Vue.component('FileUploadingSelect', FileUploadingSelect)
+
 Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
 Vue.use(VueMarkdown)
 

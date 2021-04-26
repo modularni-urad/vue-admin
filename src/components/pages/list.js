@@ -37,14 +37,14 @@ export default {
       item: {}
     }
   },
-  props: ['url', 'conf', 'label', 'prepareData', 'actionsComponent'],
+  props: ['cfg', 'prepareData', 'actionsComponent'],
   async created () {
     // console.log(this.$store.getters.UID);
-    if (_.isString(this.$props.conf)) {
-      const res = await axios.get(this.$props.conf)
+    if (_.isString(this.$props.cfg.conf)) {
+      const res = await axios.get(this.$props.cfg.conf)
       this.$data.formconfig = res.data.attrs
     } else {
-      this.$data.formconfig = this.$props.conf
+      this.$data.formconfig = this.$props.cfg.conf
     }
     const promises = _.reduce(this.$data.formconfig, (acc, i) => {
       if (i.options && _.isString(i.options)) {
@@ -94,7 +94,7 @@ export default {
         sort: ctx.sortBy ? `${ctx.sortBy}:${ctx.sortDesc ? 'desc' : 'asc'}` : 'id:asc'
       }
       let data = null
-      return axios.get(this.$props.url, { params })
+      return axios.get(this.$props.cfg.url, { params })
         .then(res => {
           this.totalRows = res.data.pagination.total
             ? res.data.pagination.total

@@ -2,7 +2,7 @@ export default `
 <div>
   <b-breadcrumb class="float-left">
     <b-breadcrumb-item to="/"><i class="fas fa-home"></i></b-breadcrumb-item>
-    <b-breadcrumb-item active>{{ label }}</b-breadcrumb-item>
+    <b-breadcrumb-item active>{{ cfg.label }}</b-breadcrumb-item>
   </b-breadcrumb>
 
   <div class="float-right">

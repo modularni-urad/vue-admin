@@ -1,25 +1,6 @@
 import EditList from './pages/list.js'
 import { formCfg, prepareFileFormData } from './fileForm.js'
 
-export const EventList = {
-  components: { EditList },
-  template: `
-    <EditList label="Události" 
-      url="${API}/events/" conf="${API}/_events/config.json" />`
-}
-export const PostList = {
-  components: { EditList },
-  template: `
-    <EditList label="Článečky"
-      url="${API}/posts/" conf="${API}/_posts/config.json" />`
-}
-export const TSPlaceList = {
-  components: { EditList },
-  template: `
-    <EditList label="Místa"
-      url="${API}/ts_places/" conf="${API}/_ts_places/config.json" />`
-}
-
 const FileActions = {
   props: ['data', 'doEdit'],
   computed: {
@@ -42,13 +23,22 @@ const FileActions = {
 }
 Vue.component('FileActions', FileActions)
 
-export const FileList = {
-  data: () => { return { formCfg } },
+export default {
+  props: ['cfg'],
   methods: { prepareFileFormData },
+  computed: {
+    config: function() {
+      return {
+        label: 'soubory',
+        url: 'http://test.vxk.cz/cdn/',
+        conf: formCfg
+      }
+    }
+  },
   components: { EditList },
   template: `
-    <EditList label="Soubory" url="http://test.vxk.cz/cdn/" 
-      :conf="formCfg" :prepareData="prepareFileFormData" 
+    <EditList :cfg="config"  
+      :prepareData="prepareFileFormData" 
       actionsComponent="FileActions" />
   `
 }

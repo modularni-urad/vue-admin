@@ -17,10 +17,10 @@ export default {
       sidebar: false
     }
   },
-  props: ['url', 'conf'],
+  props: ['cfg'],
   async created () {
-    this.getFormconfig = formconfigManager(this.$props.url)
-    const res = await axios.get(this.$props.url + 'routes.json')
+    this.getFormconfig = formconfigManager(this.$props.cfg.url)
+    const res = await axios.get(this.$props.cfg.url + 'routes.json')
     this.$data.pages = res.data
     this.$data.ready = true
   },
@@ -60,7 +60,7 @@ export default {
         this.$data.sidebar = false
         this.$data.loading = true
         this.$data.selectedPage = node.data
-        const dataReq = await axios.get(this.$props.url + node.data.file)
+        const dataReq = await axios.get(this.$props.cfg.url + node.data.file)
         this.$data.curr = jsyaml.load(dataReq.data)
         this.$data.edited = null
         this.$data.loading = false
@@ -108,7 +108,7 @@ export default {
       </div>
       <div class="col-8">
         <ComponentEditor v-if="edited" 
-          :apiurl="url" 
+          :apiurl="cfg.url" 
           :formConfig="formConfig" 
           :data="edited" 
           :page="selectedPage" />

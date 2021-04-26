@@ -1,40 +1,35 @@
 /* global Vue, VueRouter */
+axios.defaults.withCredentials = true
 import App from './components/App.js'
 import './vuecustoms.js'
 import Store from './store.js'
 
 import Login from './components/pages/auth/login.js'
-import FileUploadingSelect from './components/file_uploading_select.js'
-Vue.component('FileUploadingSelect', FileUploadingSelect)
-// import cardpreviews from './components/previews.js'
-// Vue.component('cardpreviews', cardpreviews)
-
 import Dashboard from './components/pages/dashboard.js'
-import { EventList, PostList, FileList, TSPlaceList } from './components/editlists.js'
+import Page from './components/page.js'
+import FileEditList from './components/file_edit_list.js'
 
-import WebEditor from './components/webeditor/index.js'
-export const MyWebEditor = {
-  components: { WebEditor },
-  template: `
-    <WebEditor url="http://tsprod.vxk.cz/api/taborskasetkani.eu/" />`
+export default async function init (mountpoint, settingsURL) {
+  const req = await axios(settingsURL)
+  const data = jsyaml.load(req.data)
+
+  const webRoutes = _.map(data.routes, i => {
+    return { path: i.path, component: Page, props: i }
+  })
+
+  const router = new VueRouter({
+    routes: _.union(webRoutes, [
+      { path: '/login', component: Login },
+      { path: '/', component: Dashboard, name: 'home' },
+      { path: '/files', component: FileEditList, name: 'files' }
+    ])
+  })
+
+  const store = Store(router)
+
+  new Vue({
+    router,
+    store,
+    template: App.template
+  }).$mount(mountpoint)
 }
-
-const router = new VueRouter({
-  routes: [
-    { path: '/login', component: Login },
-    { path: '/', component: Dashboard, name: 'home' },
-    { path: '/events', component: EventList, name: 'event_list' },
-    { path: '/posts', component: PostList, name: 'post_list' },
-    { path: '/files', component: FileList, name: 'file_list' },
-    { path: '/ts_places', component: TSPlaceList, name: 'ts_place_list' },
-    { path: '/web', component: MyWebEditor, name: 'webeditor' }
-  ]
-})
-
-const store = Store(router)
-
-new Vue({
-  router,
-  store,
-  template: App.template
-}).$mount('#app')
