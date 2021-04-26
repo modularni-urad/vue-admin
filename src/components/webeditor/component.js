@@ -4,6 +4,7 @@ export default {
   props: ['data', 'formConfig', 'apiurl', 'page'],
   methods: {
     onSubmit: async function (item) {
+      if (!item) return
       const data = _.omit(this.$props.data, ['id', 'component'])
       Object.assign(data, item)
       try {

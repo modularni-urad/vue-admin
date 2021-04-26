@@ -26,17 +26,28 @@ export default {
   },
   computed: {
     treeData: function () {
-      const data = {}
-      return _.map(this.$data.pages, i => {
-        const parts = i.path.split('/')
-        return {
-          id: i.path,
-          name: i.path,
-          file: i.data
-        }
-      })
       
-      //"children": 
+      function _insert2Tree (node, subtree, path) {
+        const existing = _.find(subtree, i => i.foldername === path[0])
+        if (existing && path.length > 1) {
+          existing.children = existing.children || []
+          _insert2Tree(node, existing.children, _.rest(path))
+        } else {
+          subtree.push({
+            id: node.path,
+            name: path[0],
+            file: node.data,
+            foldername: path[0]
+          })
+        }
+      }
+      const sorted = _.sortBy(this.$data.pages, 'path')
+      const tree = [{ id: '/', file: 'index.yaml', name: '/', foldername: '' }]
+      _.map(_.rest(sorted), i => {
+        const parts = i.path.split('/')
+        _insert2Tree(i, tree, parts)
+      })
+      return tree
     }
   },
   methods: {
@@ -60,8 +71,13 @@ export default {
     },
     componentSelect: async function (node, selected) {
       if (selected) {
-        this.$data.formConfig = await this.getFormconfig(node.data.component)
-        this.$data.edited = node.data
+        try {
+          this.$data.formConfig = await this.getFormconfig(node.data.component)
+          this.$data.edited = node.data
+        } catch (e) {
+          const m = 'tento komponent není editovatelný'
+          this.$store.dispatch('toast', { message: m, type: 'error' })
+        }
       } else if (node.data === this.edited) {
         this.edited = null
       }
@@ -92,7 +108,10 @@ export default {
       </div>
       <div class="col-8">
         <ComponentEditor v-if="edited" 
-          :apiurl="url" :formConfig="formConfig" :data="edited" :page="selectedPage" />
+          :apiurl="url" 
+          :formConfig="formConfig" 
+          :data="edited" 
+          :page="selectedPage" />
       </div>
     </div>
   </div>
