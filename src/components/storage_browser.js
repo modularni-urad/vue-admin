@@ -7,7 +7,7 @@ export default {
       formconfig: {
         name: 'tags',
         options: null,
-        attrmap: { value: "id", text: "title" }
+        attrmap: { value: "value", text: "value" }
       },
       filter: {
         tags: ''

@@ -68,8 +68,8 @@ export default {
 
   <b-modal size="lg" id="modal-search" title="Vyhledat v úložišti">
     <storageBrowser :onSelect="onSelect"
-      :url="config.tag_url" 
-      :tagurl="config.search_url" />
+      :url="config.search_url" 
+      :tagurl="config.tag_url" />
   </b-modal>
   <b-modal id="modal-upload" title="Nahrát do úložiště" hide-footer>
     <b-form-file @input="onFileSelected" 

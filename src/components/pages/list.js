@@ -124,7 +124,7 @@ export default {
       const p = this.$props
       try {
         const data = p.prepareData ? await p.prepareData(item) : item
-        const url = this.curr ? `${p.url}${this.curr.id}` : p.url
+        const url = this.curr ? `${p.cfg.url}${this.curr.id}` : p.cfg.url
         const method = this.curr ? 'put' : 'post'
         const res = await this.$store.dispatch('send', { method, url, data })
         this.$store.dispatch('toast', { message: 'uloženo' })

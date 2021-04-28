@@ -30,6 +30,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.5/dist/vuelidate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuelidate@0.7.5/dist/validators.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js" integrity="sha512-dYHhQSvQ3Lepc2xDidh80aADfrIAaVTs52W5JSFlE47SJgcwD+YY+iY0XmXD9UX3k0YOPvoyugS/ieGjpu5M/Q==" crossorigin="anonymous"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/vue-toast-notification@0.6.1/dist/index.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-toast-notification@0.6.1/dist/theme-default.css">
@@ -40,11 +41,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.4.5/vee-validate.min.js" integrity="sha512-02+J8EtbdW+S2bJXztC42ZKTA+C/1bHZszXy/4KwGhB2DWiHm7pT/EKxVaMXpx0NYIn3VdNUzHHgS06ljRO/ew==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.4.5/rules.umd.min.js" integrity="sha512-S9OYLwnuL0w/L82qBpcuxbYUlNdjGUiKVLrE8bvCQaicpPa8Cag87wounMUu829fS3AAOU65TCkrgFTaBmhCOQ==" crossorigin="anonymous"></script>
 
-
-    <script>
-      var API = 'http://test.vxk.cz/api'
-      axios.defaults.withCredentials = true
-    </script>
   </head>
   <body>
     <div id="app"></div>
@@ -54,6 +50,9 @@
     <![endif]-->
     <!--[if !IE]><!-->
     <script src="bundle.js"></script>
+    <script>
+      initMUAdmin('#app', 'settings.yaml')
+    </script>
     <!--<![endif]-->
   </body>
 </html>
