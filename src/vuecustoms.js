@@ -1,5 +1,7 @@
 /* global Vue, _, moment, VueBootstrapTypeahead, VueMarkdown,
-  VeeValidateRules, VeeValidate */
+  VeeValidateRules, VeeValidate, VueToast */
+
+Vue.use(VueToast, { position: 'top-right' })
 
 Vue.filter('formatDate', function (value) {
   if (value) {

@@ -1,26 +1,4 @@
-export const formCfg = [
-  {
-    "name":"file",
-    "component":"dyn-fileinput",
-    "label":"Soubor"
-  }, {
-    "name":"nazev",
-    "component":"dyn-input",
-    "fieldcomponent":true,
-    "label":"Nazev",
-    "rules":"required"
-  },{
-    "name":"tags",
-    "component":"dyn-input",
-    "label":"Tagy",
-    "fieldcomponent":true,
-    "rules":"required"
-  },{
-    "name":"popis",
-    "component":"dyn-textarea",
-    "label":"Popis"
-  }
-]
+
 
 export async function prepareFileFormData(data) {
   if (!data.file) return data
