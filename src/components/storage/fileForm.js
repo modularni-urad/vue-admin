@@ -8,7 +8,7 @@ export async function prepareFileFormData(data) {
   return data
 }
 
-function loadAsBase64(theFile) {
+export function loadAsBase64(theFile) {
   return new Promise((resolve, reject) => {
     var reader = new FileReader()
 
