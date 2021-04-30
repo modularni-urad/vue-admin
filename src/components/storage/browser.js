@@ -1,4 +1,4 @@
-import formComponents from '../../../bootstrap-vue-dynamic-form/index.js'
+import formComponents from '../../bootstrap-vue-dynamic-form/index.js'
 import ImageList from './imagelist.js'
 
 export default {

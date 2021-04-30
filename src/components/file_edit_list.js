@@ -1,5 +1,5 @@
 import EditList from './pages/list.js'
-import { formCfg, prepareFileFormData } from './fileForm.js'
+import { prepareFileFormData } from './storage/fileForm.js'
 
 const FileActions = {
   props: ['data', 'doEdit'],
@@ -30,8 +30,8 @@ export default {
     config: function() {
       return {
         label: 'soubory',
-        url: 'http://test.vxk.cz/cdn/',
-        conf: formCfg
+        url: 'http://test.vxk.cz/api/_files/',
+        conf: 'http://test.vxk.cz/api/_files/config.json'
       }
     }
   },
