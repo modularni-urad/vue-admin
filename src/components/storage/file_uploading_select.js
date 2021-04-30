@@ -49,7 +49,7 @@ export default {
       :onSelect="onSelect.bind(this, 'modal-search')"
       :config="config" />
   </b-modal>
-  <b-modal id="modal-upload" title="Nahrát do úložiště" hide-footer>
+  <b-modal size="lg" id="modal-upload" title="Nahrát do úložiště" hide-footer>
     <storageUploader 
       :onSelect="onSelect.bind(this, 'modal-upload')"
       :config="config" />

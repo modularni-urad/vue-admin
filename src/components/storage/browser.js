@@ -33,7 +33,9 @@ export default {
         ctype: { like: 'image%' }
       }
       if (this.$data.filter.tags) {
-        filter.tags = { like: this.$data.filter.tags }
+        filter.and = _.map(this.$data.filter.tags.split(','), i => {
+          return { tags: { like: "%" + i + "%" } }
+        })
       }
       const res = await axios.get(this.$props.config.fileindex_url, { params: {
         filter: JSON.stringify(filter),
