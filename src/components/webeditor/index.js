@@ -2,7 +2,8 @@
 
 import PageEditor from './page.js'
 import ComponentEditor from './component.js'
-import formconfigManager from './formconfigs.js'
+import formconfigManager, { newPageConfig } from './formconfigs.js'
+import ItemForm from '../pages/form.js'
 
 export default {
   data: () => {
@@ -48,12 +49,39 @@ export default {
         _insert2Tree(i, tree, parts)
       })
       return tree
+    },
+    addFormConfig: function () {
+      const parentOptions = _.map(_.sortBy(this.$data.pages, 'path'), i => {
+        return { text: i.path, value: i.data }
+      })
+      return newPageConfig(parentOptions)
     }
   },
   methods: {
-    add: function () {
-      this.$data.curr = null
+    addPage: function () {
       this.$bvModal.show('modal-add')
+    },
+    onAddedPage: async function (page) {
+      if (page) {
+        const req = {
+          method: 'POST',
+          url: this.$props.cfg.url,
+          data: page
+        }
+        try {
+          const res = await this.$store.dispatch('send', req)
+          this.$store.dispatch('toast', { message: 'uloženo' })
+          const newPage = { data: `${page.path}.yaml`, path: `/${page.path}` }
+          this.$data.pages.push(newPage)
+          this.$data.selectedPage = newPage
+          this.$data.curr = jsyaml.load(res.data.content)
+          this.$data.edited = null
+        } catch (err) {
+          const message = err.response.data
+          this.$store.dispatch('toast', { message, type: 'error' })
+        }
+      }
+      this.$bvModal.hide('modal-add')
     },
     nodeSelect: async function (node, selected) {
       if (selected) {
@@ -71,6 +99,7 @@ export default {
     },
     componentSelect: async function (node, selected) {
       if (selected) {
+        this.$data.editedComponentID = node._uid
         try {
           this.$data.formConfig = await this.getFormconfig(node.data.component)
           this.$data.edited = node.data
@@ -78,7 +107,7 @@ export default {
           const m = 'tento komponent není editovatelný'
           this.$store.dispatch('toast', { message: m, type: 'error' })
         }
-      } else if (node.data === this.edited) {
+      } else if (node._uid === this.$data.editedComponentID) {
         this.edited = null
       }
     }
@@ -86,7 +115,8 @@ export default {
   components: {
     'b-tree-view': bootstrapVueTreeview.bTreeView,
     PageEditor,
-    ComponentEditor
+    ComponentEditor,
+    'item-form': ItemForm
   },
   template: `
   <div>
@@ -97,6 +127,7 @@ export default {
         :data="treeData"
         @nodeSelect="nodeSelect"
       />
+      <b-button class="m-4" @click="addPage">Přidat stránku</b-button>
     </b-sidebar>
     
     <i v-if="loading" class="fas fa-spinner fa-spin"></i>
@@ -114,6 +145,11 @@ export default {
           :page="selectedPage" />
       </div>
     </div>
+
+    <b-modal v-if="ready" size="xl" id="modal-add" title="Upravit" hide-footer>
+      <item-form :config="addFormConfig" :onSubmit="onAddedPage">
+      </item-form>
+    </b-modal>
   </div>
   `
 }

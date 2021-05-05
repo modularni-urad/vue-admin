@@ -26,7 +26,7 @@ export default {
   },
   components: { ItemForm },
   template: `
-  <div>
+  <div :key="data.id">
     <h2>{{ data.component }} (<small>{{ data.id }}</small>)</h2>
     <ItemForm :config="formConfig" :onSubmit="onSubmit" :item="data" />
   </div>

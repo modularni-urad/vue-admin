@@ -29,6 +29,8 @@ export default {
   <div>
     <h2>{{ data.title }}</h2>
     <p>{{ data.desc }}</p>
+    <hr />
+    <h4>Komponenty</h4>
     <b-tree-view showIcons nodesDraggable
       :renameNodeOnDblClick="false"
       nodeLabelProp="component" 
