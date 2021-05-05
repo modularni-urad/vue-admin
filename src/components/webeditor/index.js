@@ -139,7 +139,7 @@ export default {
       </div>
       <div class="col-8">
         <ComponentEditor v-if="edited" 
-          :apiurl="cfg.url" 
+          :apiUrl="cfg.apiUrl" 
           :formConfig="formConfig" 
           :data="edited" 
           :page="selectedPage" />

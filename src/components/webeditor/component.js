@@ -1,7 +1,7 @@
 import ItemForm from '../pages/form.js'
 
 export default {
-  props: ['data', 'formConfig', 'apiurl', 'page'],
+  props: ['data', 'formConfig', 'apiUrl', 'page'],
   methods: {
     onSubmit: async function (item) {
       if (!item) return
@@ -10,7 +10,7 @@ export default {
       try {
         await this.$store.dispatch('send', {
           method: 'put',
-          url: this.$props.apiurl,
+          url: this.$props.apiUrl,
           data: item,
           params: {
             id: this.$props.data.id,
