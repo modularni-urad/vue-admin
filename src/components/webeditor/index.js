@@ -20,8 +20,8 @@ export default {
   },
   props: ['cfg'],
   async created () {
-    this.getFormconfig = formconfigManager(this.$props.cfg.url)
-    const res = await axios.get(this.$props.cfg.url + 'routes.json')
+    this.getFormconfig = formconfigManager(this.$props.cfg.dataUrl)
+    const res = await axios.get(this.$props.cfg.routesUrl)
     this.$data.pages = res.data
     this.$data.ready = true
   },
@@ -65,7 +65,7 @@ export default {
       if (page) {
         const req = {
           method: 'POST',
-          url: this.$props.cfg.url,
+          url: this.$props.cfg.apiUrl,
           data: page
         }
         try {
@@ -88,7 +88,7 @@ export default {
         this.$data.sidebar = false
         this.$data.loading = true
         this.$data.selectedPage = node.data
-        const dataReq = await axios.get(this.$props.cfg.url + node.data.file)
+        const dataReq = await axios.get(this.$props.cfg.dataUrl + node.data.file)
         this.$data.curr = jsyaml.load(dataReq.data)
         this.$data.edited = null
         this.$data.loading = false
