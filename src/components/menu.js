@@ -23,21 +23,23 @@ export default {
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <div>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item" v-for="(i, idx) in menuItems" :key="idx">
-          <router-link class="nav-link" :to="i.path">{{ label(i.props) }}</router-link>
-        </li>
-      </ul>
-    </div>
-    <button v-if="$store.getters.userLogged" class="btn btn-warning"
-      v-on:click="$store.dispatch('logout')">
-      Odhlásit {{$store.state.user.email}}
-    </button>
-    <router-link v-else class="btn btn-primary" to="/login">
-      Přihlásit
-    </router-link>
-  </div>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" v-for="(i, idx) in menuItems" :key="idx">
+        <router-link class="nav-link" :to="i.path">{{ label(i.props) }}</router-link>
+      </li>
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <button v-if="$store.getters.userLogged" class="btn btn-warning"
+        v-on:click="$store.dispatch('logout')">
+        Odhlásit {{$store.state.user.email}}
+      </button>
+      <b-button v-else @click="$store.commit('showLogin')">
+        Přihlásit
+      </b-button>
+    </form>
+
 </nav>
   `
 }

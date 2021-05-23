@@ -8,11 +8,13 @@ Vue.filter('username', function (uid) {
   return loadedUsers[uid] || 'unknown'
 })
 
-export default function (router) {
+export default function (router, cfg) {
   //
   const store = new Vuex.Store({
     state: {
-      user: savedUser && JSON.parse(savedUser)
+      user: savedUser && JSON.parse(savedUser),
+      loginReqired: false,
+      cfg
     },
     getters: {
       userLogged: state => {
@@ -25,12 +27,19 @@ export default function (router) {
         } catch (_) {
           return false
         }
+      },
+      hasMultipleLoginEPs: state => {
+        const eps = cfg.login.endpoints
+        return _.isArray(eps) && eps.length > 1
       }
     },
     mutations: {
       profile: (state, profile) => {
         localStorage.setItem(KEY, JSON.stringify(profile))
         state.user = profile
+      },
+      showLogin: (state) => {
+        state.loginReqired = true
       }
     },
     actions: {
@@ -40,12 +49,12 @@ export default function (router) {
       login: async function (ctx, opts) {
         try {
           const reqOpts = { withCredentials: false }
-          const u = await axios.post(`${API}/public/user/login`, opts, reqOpts)
-          const user = u.data
-          const g = await axios.get(`${API}/groupman/mship/${user.id}/groups`)
-          user.groups = g.data
-          this.commit('profile', user)
-          return user
+          const url = this.getters.hasMultipleLoginEPs 
+            ? opts.endpoint 
+            : this.state.login.endpoints
+          const loginReq = await axios.post(url, opts, reqOpts)
+          this.commit('profile', loginReq.data)
+          return loginReq.data
         } catch (e) {
           const message = e.response.data
           this.dispatch('toast', { message, type: 'error' })

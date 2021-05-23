@@ -1,37 +1,81 @@
+const formComponents = BSVueDynamicForm
+const formConfig = [
+  {
+    name: 'username',
+    component: 'dyn-input',
+    label: "uživatelské jméno",
+    rules: 'required'
+  },
+  {
+    name: 'password',
+    component: 'dyn-input',
+    label: "heslo",
+    rules: 'required'
+  }
+]
+
 export default {
   data: () => {
     return {
-      record: {
+      formdata: {
         username: '',
-        password: ''
+        password: '',
+        endpoint: null
       },
       error: null,
       errcount: 0,
-      working: false
+      submitting: false,
+      config: formConfig
     }
+  },
+  created () {
+    const endpoints = this.$store.state.cfg.login.endpoints
+    const add = this.$store.getters.hasMultipleLoginEPs && this.$data.config.length === 2 
+    add && this.$data.config.push({
+      name: "endpoint",
+      component: "dyn-select",
+      options: endpoints,
+      label: 'uživatelský kmen'
+    })
+    this.$data.formdata.endpoint = endpoints[0].value
   },
   methods: {
     login: async function () {
       try {
         this.$data.error = null
-        this.$data.working = true
-        await this.$store.dispatch('login', this.$data.record)
+        this.$data.submitting = true
+        await this.$store.dispatch('login', this.$data.formdata)
         this.$router.push('/')
       } catch (err) {
         this.$data.error = err.response.data
         this.$data.errcount++
       } finally {
-        this.$data.working = false
+        this.$data.submitting = false
       }
     }
   },
-  computed: {
-    submitDisabled: function () {
-      return this.$data.record.username.length === 0 ||
-          this.$data.record.password.length === 0
-    }
-  },
+  components: formComponents,
   template: `
+  <ValidationObserver v-slot="{ invalid }">
+    <form @submit.prevent="login">
+
+      <component v-for="c in config" :key="c.name"
+        :is="c.component" :config="c" :data="formdata">
+      </component>
+
+      <b-button type="submit" class="mt-3" :disabled="invalid || submitting">
+        Odeslat
+      </b-button>
+
+      <div v-if="error" class="alert alert-danger" role="alert">
+        Neplatné přihlašovací údaje
+      </div>
+
+      <i v-if="submitting" class="fas fa-spinner fa-spin"></i>
+    </form>
+  </ValidationObserver>
+  `,
+  template2: `
 <form>
   <div class="input-group mb-3">
     <div class="input-group-append">
