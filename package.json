@@ -5,11 +5,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "browser-sync start --port 8080 --server 'src' --files 'src' --single --no-open",
+    "start": "node dev/server.js",
     "build": "rollup src/main.js --file dist/bundle.js --format iife --name initMUAdmin"
   },
   "devDependencies": {
-    "browser-sync": "^2.24.1"
+    "bootstrap-vue-dynamic-form": "^0.1.1",
+    "browser-sync": "^2.26.14",
+    "express": "^4.17.1"
   },
   "dependencies": {
     "rollup": "^1.29.1"
