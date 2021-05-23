@@ -24,3 +24,6 @@ bs.init({
   // ]
 })
 bs.watch(DEV_DIR + '/index.html').on('change', bs.reload)
+bs.watch(SRC_DIR + '/**/*.js').on('change', function (filepath, file) {
+  bs.reload(filepath)
+})

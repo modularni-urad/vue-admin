@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node dev/server.js",
+    "start": "node --inspect dev/server.js",
     "build": "rollup src/main.js --file dist/bundle.js --format iife --name initMUAdmin"
   },
   "devDependencies": {
