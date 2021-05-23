@@ -11,11 +11,15 @@ const _confs = {
 
 export default function manager (url) {
   
-  async function _getComponent(componentName) {
-    const u = `${url}_configs/${componentName}.json`
-    const cfgRes = await axios.get(u)
-    _confs[componentName] = cfgRes.data
-    return cfgRes.data
+  function _getComponent(componentName) {
+    const u = `${url}_service/configs/${componentName}.json`
+    _confs[componentName] = axios.get(u, { responseType: 'json' })
+      .then(res => {
+        _confs[componentName] = res.data
+        return _confs[componentName]
+      })
+      .catch(_ => _confs[componentName] = null)
+    return _confs[componentName]
   }
 
   return async function getFormconfig(componentName) {

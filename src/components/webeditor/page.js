@@ -1,44 +1,47 @@
 /* global axios, API, _ */
 import ComponentEditor from './component.js'
 import MyTreeView from './treeView.js'
-import formconfigManager from './formconfigs.js'
+import FormconfigManager from './formconfigs.js'
 
 export default {
   data: () => {
     return {
       data: null,
+      formConfig: null,
       ready: false,
       edited: null
     }
   },
   props: ['cfg'],
   async created () {
-    this.$data.formconfigManager = formconfigManager(this.$props.cfg.dataUrl)
+    const getFormconfig = FormconfigManager(this.$props.cfg.dataUrl)
     const pageUrl = this.$props.cfg.dataUrl + this.$router.currentRoute.query.id
     const dataReq = await axios.get(pageUrl)
     const data = jsyaml.load(dataReq.data)
+    const formConfiPromises = []
     function iterateChildren (path, children) {
       return _.map(children, (i, idx) => {
         if (i.component === 'composition') {
           i.children = iterateChildren(`${path}.${idx}.children`, i.children)
+          i.collapsed = false // open by default
+        } else {
+          const p = getFormconfig(i.component).then(formconfig => {
+            i.formConfig = formconfig
+          })
+          formConfiPromises.push(p)
         }
         i.id = `${path}.${idx}`
-        i.collapsed = false // open by default
         return i
       })
     }
-    this.$data.data = iterateChildren('children', data.children)
+    const treeData = iterateChildren('children', data.children)
+    await Promise.all(formConfiPromises)
+    this.$data.data = treeData
     this.$data.ready = true
   },
   methods: {
-    componentEdit: async function (node) {
-      try {
-        this.$data.formConfig = await this.getFormconfig(node.data.component)
-        this.$data.edited = node.data
-      } catch (e) {
-        const m = 'tento komponent není editovatelný'
-        this.$store.dispatch('toast', { message: m, type: 'error' })
-      }
+    componentEdit: function (node) {
+      this.$data.edited = node
     },
     toggle: function (node) {
       node.collapsed = !node.collapsed
@@ -56,7 +59,7 @@ export default {
       </b-breadcrumb>
     </div>
 
-    <div v-if="ready" class="col-4">
+    <div v-if="ready" class="col-3">
       <h2>{{ data.title }}</h2>
       <p>{{ data.desc }}</p>
       <h4>Komponenty</h4>
@@ -66,12 +69,11 @@ export default {
         :events="{toggle, componentEdit}" />
     </div>
 
-    <div class="col-8">
+    <div class="col-9">
       <ComponentEditor v-if="edited" 
-        :apiUrl="cfg.apiUrl" 
-        :formConfig="formConfig" 
+        :apiUrl="cfg.apiUrl"
         :data="edited" 
-        :page="selectedPage" />
+        :pagefile="$router.currentRoute.query.id" />
     </div>
 
   </div>

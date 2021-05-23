@@ -20,28 +20,29 @@ const pageList = {
       </a>
       <span v-else>{{ label }}</span>
 
-      <b-dropdown v-if="sett.variant === 'component'" right dropright 
-        text="menu" class="float-right"
-      >
-        <b-dropdown-item variant="primary" @click="events.componentEdit(item)">
-          upravit <i class="fas fa-edit"></i>
-        </b-dropdown-item>
-      </b-dropdown>
-      
-      <b-dropdown v-else right dropleft text="menu" class="float-right">
-        <b-dropdown-item variant="primary" @click="events.editPage(item)">
-          upravit <i class="fas fa-edit"></i>
-        </b-dropdown-item>
-        <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item variant="success" @click="events.addPage(item)">
-          přidat podstránku <i class="far fa-file"></i>
-        </b-dropdown-item>
-        <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item variant="danger" @click="events.deletePage(item)">
-          smazat <i class="fas fa-trash-alt"></i>
-        </b-dropdown-item>
-      </b-dropdown>
+      <div v-if="sett.variant === 'component'" class="float-right">
+        <b-dropdown v-if="item.formConfig !== null" right dropright>
+          <b-dropdown-item variant="primary" @click="events.componentEdit(item)">
+            upravit <i class="fas fa-edit"></i>
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
 
+      <div v-else class="float-right">
+        <b-dropdown right dropleft text="menu">
+          <b-dropdown-item variant="primary" @click="events.editPage(item)">
+            upravit <i class="fas fa-edit"></i>
+          </b-dropdown-item>
+          <b-dropdown-divider></b-dropdown-divider>
+          <b-dropdown-item variant="success" @click="events.addPage(item)">
+            přidat podstránku <i class="far fa-file"></i>
+          </b-dropdown-item>
+          <b-dropdown-divider></b-dropdown-divider>
+          <b-dropdown-item variant="danger" @click="events.deletePage(item)">
+            smazat <i class="fas fa-trash-alt"></i>
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
     </div>
 
     <div class="ml-4" v-if="renderChildren">

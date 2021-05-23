@@ -1,7 +1,7 @@
 import ItemForm from '../pages/form.js'
 
 export default {
-  props: ['data', 'formConfig', 'apiUrl', 'page'],
+  props: ['data', 'formConfig', 'apiUrl', 'pagefile'],
   methods: {
     onSubmit: async function (item) {
       if (!item) return
@@ -14,7 +14,7 @@ export default {
           data: item,
           params: {
             id: this.$props.data.id,
-            file: this.$props.page.file
+            file: this.$props.pagefile
           }
         })
         this.$store.dispatch('toast', { message: 'saved' })
@@ -28,7 +28,7 @@ export default {
   template: `
   <div :key="data.id">
     <h2>{{ data.component }} (<small>{{ data.id }}</small>)</h2>
-    <ItemForm :config="formConfig" :onSubmit="onSubmit" :item="data" />
+    <ItemForm :config="data.formConfig" :onSubmit="onSubmit" :item="data" />
   </div>
   `
 }
