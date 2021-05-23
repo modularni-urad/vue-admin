@@ -1,5 +1,5 @@
 /* global axios, API, _, moment */
-import formComponents from '../../bootstrap-vue-dynamic-form/index.js'
+const formComponents = BSVueDynamicForm
 
 export default {
   data: function () {

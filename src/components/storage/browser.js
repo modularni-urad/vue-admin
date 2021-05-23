@@ -1,5 +1,5 @@
-import formComponents from '../../bootstrap-vue-dynamic-form/index.js'
 import ImageList from './imagelist.js'
+const formComponents = BSVueDynamicForm
 
 export default {
   data: () => {
