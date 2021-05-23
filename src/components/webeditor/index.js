@@ -1,55 +1,33 @@
 /* global axios, API, _ */
-
 import PageEditor from './page.js'
-import ComponentEditor from './component.js'
-import formconfigManager, { newPageConfig } from './formconfigs.js'
+import { newPageConfig } from './formconfigs.js'
 import ItemForm from '../pages/form.js'
+import { buildTreeData } from './utils.js'
+import MyTreeView from './treeView.js'
 
 export default {
   data: () => {
     return {
       ready: false,
       pages: null,
-      edited: null,
-      formConfig: null,
-      selectedPage: null,
       curr: null,
       loading: false,
-      sidebar: false
+      treeData: null
     }
   },
   props: ['cfg'],
   async created () {
-    this.getFormconfig = formconfigManager(this.$props.cfg.dataUrl)
+    const route = this.$router.currentRoute
+    if (route.query.id) {
+      this.$data.curr = route.query.id
+      return
+    }
     const res = await axios.get(this.$props.cfg.routesUrl)
     this.$data.pages = res.data
+    this.$data.treeData = buildTreeData (this.$data.pages)
     this.$data.ready = true
   },
   computed: {
-    treeData: function () {
-      
-      function _insert2Tree (node, subtree, path) {
-        const existing = _.find(subtree, i => i.foldername === path[0])
-        if (existing && path.length > 1) {
-          existing.children = existing.children || []
-          _insert2Tree(node, existing.children, _.rest(path))
-        } else {
-          subtree.push({
-            id: node.path,
-            name: path[0],
-            file: node.data,
-            foldername: path[0]
-          })
-        }
-      }
-      const sorted = _.sortBy(this.$data.pages, 'path')
-      const tree = [{ id: '/', file: 'index.yaml', name: '/', foldername: '' }]
-      _.map(_.rest(sorted), i => {
-        const parts = i.path.split('/')
-        _insert2Tree(i, tree, parts)
-      })
-      return tree
-    },
     addFormConfig: function () {
       const parentOptions = _.map(_.sortBy(this.$data.pages, 'path'), i => {
         return { text: i.path, value: i.data }
@@ -60,6 +38,8 @@ export default {
   methods: {
     addPage: function () {
       this.$bvModal.show('modal-add')
+    },
+    deletePage: function (node) {
     },
     onAddedPage: async function (page) {
       if (page) {
@@ -72,10 +52,7 @@ export default {
           const res = await this.$store.dispatch('send', req)
           this.$store.dispatch('toast', { message: 'uloženo' })
           const newPage = { data: `${page.path}.yaml`, path: `/${page.path}` }
-          this.$data.pages.push(newPage)
-          this.$data.selectedPage = newPage
-          this.$data.curr = jsyaml.load(res.data.content)
-          this.$data.edited = null
+          this.$router.push({ path: this.$router.currentRoute.path, query: { id: newPage.data } })
         } catch (err) {
           const message = err.response.data
           this.$store.dispatch('toast', { message, type: 'error' })
@@ -83,73 +60,30 @@ export default {
       }
       this.$bvModal.hide('modal-add')
     },
-    nodeSelect: async function (node, selected) {
-      if (selected) {
-        this.$data.sidebar = false
-        this.$data.loading = true
-        this.$data.selectedPage = node.data
-        const dataReq = await axios.get(this.$props.cfg.dataUrl + node.data.file)
-        this.$data.curr = jsyaml.load(dataReq.data)
-        this.$data.edited = null
-        this.$data.loading = false
-      } else if (node.data === this.selectedPage) {
-        this.selectedPage = null
-        this.$data.curr = null
-      }
+    editPage: async function (node) {
+      this.$router.push({ path: this.$router.currentRoute.path, query: { id: node.file } })
     },
-    componentSelect: async function (node, selected) {
-      if (selected) {
-        this.$data.editedComponentID = node._uid
-        try {
-          this.$data.formConfig = await this.getFormconfig(node.data.component)
-          this.$data.edited = node.data
-        } catch (e) {
-          const m = 'tento komponent není editovatelný'
-          this.$store.dispatch('toast', { message: m, type: 'error' })
-        }
-      } else if (node._uid === this.$data.editedComponentID) {
-        this.edited = null
-      }
+    toggle: function (node) {
+      node.collapsed = !node.collapsed
     }
   },
   components: {
-    'b-tree-view': bootstrapVueTreeview.bTreeView,
+    'b-tree-view': MyTreeView,
     PageEditor,
-    ComponentEditor,
     'item-form': ItemForm
   },
   template: `
-  <div>
-    <b-sidebar v-model="sidebar" title="Stránky" shadow backdrop>
-      <b-tree-view showIcons
-        :renameNodeOnDblClick="false" 
-        :contextMenuItems="false"
-        :data="treeData"
-        @nodeSelect="nodeSelect"
-      />
-      <b-button class="m-4" @click="addPage">Přidat stránku</b-button>
-    </b-sidebar>
-    
-    <i v-if="loading" class="fas fa-spinner fa-spin"></i>
-    <b-button @click="sidebar = true"><< Seznam stránek</b-button>
-    <hr />
-    <div class="row">
-      <div class="col-4">
-        <PageEditor v-if="curr" :data="curr" :nodeSelect="componentSelect" />
-      </div>
-      <div class="col-8">
-        <ComponentEditor v-if="edited" 
-          :apiUrl="cfg.apiUrl" 
-          :formConfig="formConfig" 
-          :data="edited" 
-          :page="selectedPage" />
-      </div>
-    </div>
-
-    <b-modal v-if="ready" size="xl" id="modal-add" title="Upravit" hide-footer>
-      <item-form :config="addFormConfig" :onSubmit="onAddedPage">
-      </item-form>
-    </b-modal>
-  </div>
+<PageEditor v-if="curr" :data="curr" :cfg="cfg" />
+<div v-else>
+  <i v-if="loading" class="fas fa-spinner fa-spin"></i>
+  <b-tree-view v-if="ready" class="m-2"
+    :data="treeData" :sett="{}"
+    :events="{toggle, editPage, deletePage, addPage}"
+  />
+  <b-modal v-if="ready" size="xl" id="modal-add" title="Upravit" hide-footer>
+    <item-form :config="addFormConfig" :onSubmit="onAddedPage">
+    </item-form>
+  </b-modal>
+</div>    
   `
 }
