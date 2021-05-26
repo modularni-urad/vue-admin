@@ -6,7 +6,7 @@ import Store from './store.js'
 import AppMenu from './components/menu.js'
 import Dashboard from './components/pages/dashboard.js'
 import Page from './components/page.js'
-import LoginScreen from './components/pages/auth/login.js'
+import LoginScreen from './components/auth/login.js'
 
 export default async function init (mountpoint, settingsURL) {
   const req = await axios(settingsURL)
