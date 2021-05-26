@@ -1,11 +1,11 @@
 import WebEditor from './webeditor/index.js'
 import EntityList from './pages/list.js'
-import Login from './pages/auth/login.js'
+import FileManager from './storage/manager.js'
 
 export default {
   props: ['component', 'cfg'],
   components: {
-    WebEditor, EntityList, Login
+    WebEditor, EntityList, FileManager
   },
   template: `
   <div class="myClass">

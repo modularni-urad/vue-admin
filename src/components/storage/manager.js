@@ -1,20 +1,18 @@
-import EditList from './pages/list.js'
-import { prepareFileFormData } from './storage/fileForm.js'
+import EditList from '../pages/list.js'
+import { prepareFileFormData } from './fileForm.js'
 
 const FileActions = {
   props: ['data', 'doEdit'],
   computed: {
     isImage: function () {
       return this.$props.data.item.ctype.indexOf('image') >= 0
-    },
-    src: function () {
-      const data = this.$props.data
-      return 'http://test.vxk.cz/cdn/file/' + data.item.id + '/' + data.item.filename
     }
   },
   template: `
   <div>
-    <img v-if="isImage" style="display: inline-block; width: 100px;" :src="src" />
+    <img v-if="isImage" style="display: inline-block;" 
+      :src="$store.getters.mediaUrl(data.item, 'w=150')" 
+    />
     <b-button size="sm" variant="primary" @click="doEdit(data.item)">
       <i class="fas fa-edit"></i> upravit
     </b-button>
@@ -26,18 +24,9 @@ Vue.component('FileActions', FileActions)
 export default {
   props: ['cfg'],
   methods: { prepareFileFormData },
-  computed: {
-    config: function() {
-      return {
-        label: 'soubory',
-        url: 'http://test.vxk.cz/api/_files/',
-        conf: 'http://test.vxk.cz/api/_files/config.json'
-      }
-    }
-  },
   components: { EditList },
   template: `
-    <EditList :cfg="config"  
+    <EditList :cfg="cfg"  
       :prepareData="prepareFileFormData" 
       actionsComponent="FileActions" />
   `

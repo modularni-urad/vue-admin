@@ -31,6 +31,14 @@ export default function (router, cfg) {
       hasMultipleLoginEPs: state => {
         const eps = cfg.login.endpoints
         return _.isArray(eps) && eps.length > 1
+      },
+      mediaUrl: (state) => (media, params) => {
+        const p = _.isArray(params) ? params.join('&') : params
+        return _.isString(media)
+          ? media.match(/^https?:\/\//)
+            ? `${cfg.cdn}/?url=${encodeURIComponent(media)}&${p}`
+            : `${cfg.cdn}/${media}?${p}`
+          : `${cfg.cdn}/${media.id}/${media.filename}?${p}`
       }
     },
     mutations: {

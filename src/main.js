@@ -7,7 +7,6 @@ import AppMenu from './components/menu.js'
 import Dashboard from './components/pages/dashboard.js'
 import Page from './components/page.js'
 import LoginScreen from './components/pages/auth/login.js'
-import FileEditList from './components/file_edit_list.js'
 
 export default async function init (mountpoint, settingsURL) {
   const req = await axios(settingsURL)
