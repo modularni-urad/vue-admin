@@ -1,7 +1,7 @@
 /* global axios, API, _ */
 import PageEditor from './page.js'
 import { newPageConfig } from './formconfigs.js'
-import ItemForm from '../pages/form.js'
+import ItemForm from '../entity/form.js'
 import { buildTreeData } from './utils.js'
 import MyTreeView from './treeView.js'
 

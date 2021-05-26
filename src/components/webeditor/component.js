@@ -1,4 +1,4 @@
-import ItemForm from '../pages/form.js'
+import ItemForm from '../entity/form.js'
 
 export default {
   props: ['data', 'formConfig', 'apiUrl', 'pagefile'],

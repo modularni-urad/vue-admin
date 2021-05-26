@@ -1,4 +1,4 @@
-import EditList from '../pages/list.js'
+import EditList from '../entity/list.js'
 import { prepareFileFormData } from './fileForm.js'
 
 const FileActions = {

@@ -1,5 +1,5 @@
 import WebEditor from './webeditor/index.js'
-import EntityList from './pages/list.js'
+import EntityList from './entity/list.js'
 import FileManager from './storage/manager.js'
 
 export default {
