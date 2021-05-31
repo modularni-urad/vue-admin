@@ -48,6 +48,9 @@ export default function (router, cfg) {
       },
       showLogin: (state) => {
         state.loginReqired = true
+      },
+      hideLogin: (state) => {
+        state.loginReqired = false
       }
     },
     actions: {
@@ -57,11 +60,14 @@ export default function (router, cfg) {
       login: async function (ctx, opts) {
         try {
           const reqOpts = { withCredentials: false }
+          const eps = cfg.login.endpoints
           const url = this.getters.hasMultipleLoginEPs 
             ? opts.endpoint 
-            : this.state.login.endpoints
-          const loginReq = await axios.post(url, opts, reqOpts)
+            : _.isArray(eps) ? eps[0].value : eps
+          const data = _.pick(opts, 'username', 'password')
+          const loginReq = await axios.post(url, data, reqOpts)
           this.commit('profile', loginReq.data)
+          this.commit('hideLogin')
           return loginReq.data
         } catch (e) {
           const message = e.response.data
@@ -70,8 +76,7 @@ export default function (router, cfg) {
       },
       logout: async function (ctx, opts) {
         try {
-          await axios.post(`${API}/public/user/logout`)
-          localStorage.removeItem(KEY)
+          await axios.post(cfg.login.logout)
           this.commit('profile', null)
           router.push('/')
         } catch (e) {
@@ -80,7 +85,7 @@ export default function (router, cfg) {
         }
       },
       send: function (ctx, opts) {
-        opts.headers = { 'Authorization': 'Bearer fjsdlkfjsl' }
+        // opts.headers = { 'Authorization': 'Bearer fjsdlkfjsl' }
         return axios(opts)
       },
       init: async function (ctx, opts) {

@@ -3,8 +3,15 @@ const serviceRoutes = ['/', '/login']
 export default {
   computed: {
     menuItems: function () {
+      const self = this
+      function _canIAcces(routeConfig) {
+        if (!routeConfig.accessGroups) return true
+        const required = routeConfig.accessGroups.split(',')
+        const i = _.intersection(required, self.$store.state.user.groups)
+        return i.length > 0
+      }
       const r = _.filter(this.$router.options.routes, i => {
-        return _.indexOf(serviceRoutes, i.path) < 0
+        return _.indexOf(serviceRoutes, i.path) < 0 && _canIAcces(i.props.cfg)
       })
       return r
     }
@@ -24,7 +31,7 @@ export default {
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 
-    <ul class="navbar-nav mr-auto">
+    <ul v-if="this.$store.getters.userLogged" class="navbar-nav mr-auto">
       <li class="nav-item" v-for="(i, idx) in menuItems" :key="idx">
         <router-link class="nav-link" :to="i.path">{{ label(i.props) }}</router-link>
       </li>

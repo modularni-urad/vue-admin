@@ -9,6 +9,7 @@ const formConfig = [
   {
     name: 'password',
     component: 'dyn-input',
+    inputtype: 'password',
     label: "heslo",
     rules: 'required'
   }
@@ -45,7 +46,6 @@ export default {
         this.$data.error = null
         this.$data.submitting = true
         await this.$store.dispatch('login', this.$data.formdata)
-        this.$router.push('/')
       } catch (err) {
         this.$data.error = err.response.data
         this.$data.errcount++
