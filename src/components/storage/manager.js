@@ -1,5 +1,5 @@
 import EditList from '../entity/list.js'
-import { prepareFileFormData } from './fileForm.js'
+import { loadAsBase64 } from './fileForm.js'
 
 const FileActions = {
   props: ['data', 'doEdit'],
@@ -22,12 +22,33 @@ const FileActions = {
 Vue.component('FileActions', FileActions)
 
 export default {
+  data: function () {
+    return {
+      saveHooks: {
+        prepare: async function (that, data) {
+          return data.file
+            ? Object.assign(_.omit(data, 'file'), { 
+                file: _.pick(data.file, 'type', 'name', 'size')
+              })
+            : data
+        },
+        finish: async function (that, data, result) {
+          const content = await loadAsBase64(data.file)
+          await that.$store.dispatch('send', { 
+            method: 'post', 
+            url: `${that.$props.cfg.storage_url}/${result.id}/${result.filename}`,
+            data: { content }
+          })
+        }
+      }
+    }
+  },
   props: ['cfg'],
-  methods: { prepareFileFormData },
   components: { EditList },
   template: `
-    <EditList :cfg="cfg"  
-      :prepareData="prepareFileFormData" 
-      actionsComponent="FileActions" />
+    <div>
+      {{ $data.saveHooks }}
+    <EditList :cfg="cfg" :saveHooks="$data.saveHooks" actionsComponent="FileActions" />
+    </div>
   `
 }

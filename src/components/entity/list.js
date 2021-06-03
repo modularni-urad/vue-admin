@@ -37,7 +37,7 @@ export default {
       item: {}
     }
   },
-  props: ['cfg', 'prepareData', 'actionsComponent'],
+  props: ['cfg', 'saveHooks', 'actionsComponent'],
   async created () {
     // console.log(this.$store.getters.UID);
     if (_.isString(this.$props.cfg.conf)) {
@@ -123,10 +123,13 @@ export default {
       if (!item) return this.$bvModal.hide('modal-add')
       const p = this.$props
       try {
-        const data = p.prepareData ? await p.prepareData(item) : item
+        const data = p.saveHooks && p.saveHooks.prepare 
+          ? await p.saveHooks.prepare(this, item) : item
         const url = this.curr ? `${p.cfg.url}${this.curr.id}` : p.cfg.url
         const method = this.curr ? 'put' : 'post'
         const res = await this.$store.dispatch('send', { method, url, data })
+        p.saveHooks && p.saveHooks.finish 
+            && await p.saveHooks.finish(this, item, res.data)
         this.$store.dispatch('toast', { message: 'uloženo' })
         this.curr
           ? Object.assign(this.curr, res.data)
