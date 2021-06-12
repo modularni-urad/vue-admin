@@ -19,15 +19,16 @@ export default {
   async created () {
     const dataUrl = this.$props.cfg.dataUrl
     const file = this.$props.file.split('.')[0]
-    const resps = await Promise.all([
-      axios(`${dataUrl}_service/components/${file}.js`),
-      axios(`${dataUrl}_service/style/components/${file}.scss`),
-      axios(`${dataUrl}_service/configs/${file}.yaml`)
-    ])
-    this.$data.formdata.js = resps[0].data
-    // this.$data.formdata.template = res[1].data
-    this.$data.formdata.style = resps[1].data
-    this.$data.formdata.config = resps[2].data
+    let resp = await axios(`${dataUrl}_service/components/${file}.js`)
+    this.$data.formdata.js = resp.data
+    try {
+      resp = await axios(`${dataUrl}_service/style/components/${file}.scss`)
+      this.$data.formdata.style = resp.data
+    } catch (_) {}
+    try {
+      resp = await axios(`${dataUrl}_service/configs/${file}.yaml`)
+      this.$data.formdata.config = resp.data
+    } catch (_) {}
   },
   computed: {
     cm: function () {
