@@ -40,6 +40,9 @@ export default {
         return { text: i.path, value: i.data }
       })
       return newPageConfig(parentOptions)
+    },
+    showSysConfig: function () {
+      return this.$data.sysItem && this.$store.getters.isMember('webmaster')
     }
   },
   methods: {
@@ -88,7 +91,7 @@ export default {
   },
   template: `
 <PageEditor v-if="curr" :data="curr" :cfg="cfg" />
-<SysEditor v-else-if="sysItem" :data="sysItem" :cfg="cfg" />
+<SysEditor v-else-if="showSysConfig" :data="sysItem" :cfg="cfg" />
 <div v-else>
   <i v-if="loading" class="fas fa-spinner fa-spin"></i>
   <b-button v-b-modal.modal-sys>Systemové komponenty</b-button>
