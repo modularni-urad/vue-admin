@@ -94,7 +94,9 @@ export default {
 <SysEditor v-else-if="showSysConfig" :data="sysItem" :cfg="cfg" />
 <div v-else>
   <i v-if="loading" class="fas fa-spinner fa-spin"></i>
-  <b-button v-b-modal.modal-sys>Systemové komponenty</b-button>
+  <b-button v-b-modal.modal-sys v-if="$store.getters.isMember('webmaster')">
+    Systemové komponenty
+  </b-button>
   <b-tree-view v-if="ready" class="m-2"
     :data="treeData" :sett="{}"
     :events="{toggle, editPage, deletePage, addPage}"
