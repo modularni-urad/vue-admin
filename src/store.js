@@ -32,13 +32,12 @@ export default function (router, cfg) {
         const eps = cfg.login.endpoints
         return _.isArray(eps) && eps.length > 1
       },
-      mediaUrl: (state) => (media, params) => {
-        const p = _.isArray(params) ? params.join('&') : params
-        return _.isString(media)
-          ? media.match(/^https?:\/\//)
-            ? `${cfg.cdn}/?url=${encodeURIComponent(media)}&${p}`
-            : `${cfg.cdn}/${media}?${p}`
-          : `${cfg.cdn}/${media.id}/${media.filename}?${p}`
+      mediaUrl: (state) => (media, params = null) => {
+        const murl = _.isString(media)
+          ? encodeURIComponent(media)
+          : `${cfg.cdn}/${media.id}/${media.filename}`
+        if (!params) return murl
+        return `${cfg.cdn}/resize/?url=${murl}&${params}`
       }
     },
     mutations: {
@@ -66,7 +65,9 @@ export default function (router, cfg) {
             : _.isArray(eps) ? eps[0].value : eps
           const data = _.pick(opts, 'username', 'password')
           const loginReq = await axios.post(url, data, reqOpts)
-          this.commit('profile', loginReq.data)
+          const profile = loginReq.data
+          if (loginReq.headers['bearer']) profile.token = loginReq.headers['bearer']
+          this.commit('profile', profile)
           this.commit('hideLogin')
           return loginReq.data
         } catch (e) {
@@ -85,7 +86,9 @@ export default function (router, cfg) {
         }
       },
       send: function (ctx, opts) {
-        // opts.headers = { 'Authorization': 'Bearer fjsdlkfjsl' }
+        this.state.user.token && Object.assign(opts, {  // for debug only
+          headers: { 'Authorization': `Bearer ${this.state.user.token}`}
+        })
         return axios(opts)
       },
       init: async function (ctx, opts) {
