@@ -28,7 +28,7 @@ export default {
   // },
   methods: {
     imgURL: function (i) {
-      return `${this.$props.storage_url}${i.id}/${i.filename}`
+      return `${i.id}/${i.filename}`
     },
     imgURLSmall: function (i) {
       return `${this.$props.storage_url}${i.id}/${i.filename}?w=200`
