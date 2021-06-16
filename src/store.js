@@ -37,7 +37,7 @@ export default function (router, cfg) {
           ? encodeURIComponent(media)
           : `${cfg.cdn}/${media.id}/${media.filename}`
         if (!params) return murl
-        return `${cfg.cdn}/resize/?url=${murl}&${params}`
+        return `${cfg.cdn}/api/resize/?url=${murl}&${params}`
       }
     },
     mutations: {
