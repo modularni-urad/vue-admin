@@ -46,9 +46,6 @@ export default {
   props: ['cfg'],
   components: { EditList },
   template: `
-    <div>
-      {{ $data.saveHooks }}
-    <EditList :cfg="cfg" :saveHooks="$data.saveHooks" actionsComponent="FileActions" />
-    </div>
+<EditList :cfg="cfg" :saveHooks="$data.saveHooks" actionsComponent="FileActions" />
   `
 }
