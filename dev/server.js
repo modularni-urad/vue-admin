@@ -1,5 +1,5 @@
 const path = require('path')
-const express = require('express')
+// const express = require('express')
 const BS = require('browser-sync')
 const bs = BS.create()
 const SRC_DIR = path.resolve(path.join(__dirname, '../src'))
@@ -9,19 +9,7 @@ bs.init({
   server: [ SRC_DIR, DEV_DIR ],
   port: 8080,
   open: false,
-  ui: false,
-  // middleware: [
-  //   express.static(NODE_MODULES),
-  // bodyParser.json(),
-  // {
-  //   route: '/api',
-  //   handle: data
-  // },
-  // {
-  //   route: '/webdav',
-  //   handle: WebDAVHandler(path.join(WEB_FOLDER, 'style'))
-  // }
-  // ]
+  ui: false
 })
 bs.watch(DEV_DIR + '/index.html').on('change', bs.reload)
 bs.watch(SRC_DIR + '/**/*.js').on('change', function (filepath, file) {

@@ -1,6 +1,4 @@
 /* global axios, API, _, moment */
-const formComponents = BSVueDynamicForm
-
 export default {
   data: function () {
     return {
@@ -28,7 +26,6 @@ export default {
       this.$props.onSubmit() // just call
     }
   },
-  components: formComponents,
   template: `
   <ValidationObserver v-slot="{ invalid }">
     <form @submit.prevent="handleSubmit">

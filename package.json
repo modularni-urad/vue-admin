@@ -9,7 +9,6 @@
     "build": "rollup src/main.js --file dist/bundle.js --format iife --name initMUAdmin"
   },
   "devDependencies": {
-    "bootstrap-vue-dynamic-form": "^0.1.1",
     "browser-sync": "^2.26.14",
     "express": "^4.17.1"
   },

@@ -1,6 +1,4 @@
 import ImageList from './imagelist.js'
-const formComponents = BSVueDynamicForm
-
 export default {
   data: () => {
     return {
@@ -45,7 +43,7 @@ export default {
       this.$data.loading = false
     }
   },
-  components: _.extend(formComponents, { ImageList }),
+  components: { ImageList },
   template: `
   <div>
     <dyn-taginput :config="formconfig" :data="filter" />

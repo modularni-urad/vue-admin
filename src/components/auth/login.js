@@ -1,4 +1,3 @@
-const formComponents = BSVueDynamicForm
 const formConfig = [
   {
     name: 'username',
@@ -54,7 +53,6 @@ export default {
       }
     }
   },
-  components: formComponents,
   template: `
   <ValidationObserver v-slot="{ invalid }">
     <form @submit.prevent="login">

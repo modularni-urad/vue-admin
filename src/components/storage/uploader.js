@@ -1,6 +1,5 @@
 import { loadAsBase64 } from './fileForm.js'
 import ImageList from './imagelist.js'
-const formComponents = BSVueDynamicForm
 
 export default {
   data: () => {
@@ -24,7 +23,7 @@ export default {
       }      
     }
   },
-  components: _.extend(formComponents, { ImageList }),
+  components: { ImageList },
   methods: {
     upload: async function (file) {
       this.$data.uploading = true

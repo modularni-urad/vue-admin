@@ -1,5 +1,13 @@
 /* global Vue, _, moment, VueBootstrapTypeahead, VueMarkdown,
   VeeValidateRules, VeeValidate, VueToast */
+import DynComponents from '../modules/bootstrap-vue-dynamic-form/index.js'
+import { 
+  WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR 
+} from '../modules/bootstrap-vue-dynamic-form/components/file.js'
+
+for (let i in DynComponents) {
+  Vue.component(i, DynComponents[i])
+}
 
 Vue.use(VueToast, { position: 'top-right' })
 
@@ -27,3 +35,4 @@ Vue.component('ValidationProvider', VeeValidate.ValidationProvider)
 Vue.component('ValidationObserver', VeeValidate.ValidationObserver)
 
 VeeValidate.extend('required', VeeValidateRules.required)
+VeeValidate.extend(WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR)
