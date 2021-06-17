@@ -43,7 +43,7 @@ export default {
         const content = await loadAsBase64(f)
         await self.$store.dispatch('send', { 
           method: 'post', 
-          url: `${self.$props.config.storage_url}/${res.data.id}/${res.data.filename}`,
+          url: `${self.$props.config.storage_url}/api/${res.data.id}/${res.data.filename}`,
           data: { content }
         })
         self.$store.dispatch('toast', { message: `${f.name}: uložen` })
