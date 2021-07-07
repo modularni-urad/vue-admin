@@ -1,3 +1,6 @@
 [submodule "src/modules/bootstrap-vue-dynamic-form"]
 	path = src/modules/bootstrap-vue-dynamic-form
 	url = https://github.com/vencax/bootstrap-vue-dynamic-form
+[submodule "src/modules/bbb-web-editor"]
+	path = src/modules/bbb-web-editor
+	url = https://github.com/otevrenamesta/bbb-web-editor

@@ -1,4 +1,4 @@
-import WebEditor from './webeditor/index.js'
+import WebEditor from '../modules/bbb-web-editor/index.js'
 import EntityList from './entity/list.js'
 import FileManager from './storage/manager.js'
 
