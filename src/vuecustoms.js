@@ -1,5 +1,6 @@
 /* global Vue, _, moment, VueBootstrapTypeahead, VueMarkdown,
   VeeValidateRules, VeeValidate, VueToast */
+import DynamicForm from './components/entity/form.js'
 import DynComponents from './modules/bootstrap-vue-dynamic-form/index.js'
 import { 
   WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR 
@@ -36,3 +37,5 @@ Vue.component('ValidationObserver', VeeValidate.ValidationObserver)
 
 VeeValidate.extend('required', VeeValidateRules.required)
 VeeValidate.extend(WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR)
+
+Vue.component('DynamicForm', DynamicForm)
