@@ -2,6 +2,7 @@
   VeeValidateRules, VeeValidate, VueToast */
 import DynamicForm from './components/entity/form.js'
 import DynComponents from './modules/bootstrap-vue-dynamic-form/index.js'
+import MDEditor from './components/MDEditor.js'
 import { 
   WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR 
 } from './modules/bootstrap-vue-dynamic-form/components/file.js'
@@ -39,3 +40,5 @@ VeeValidate.extend('required', VeeValidateRules.required)
 VeeValidate.extend(WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR)
 
 Vue.component('DynamicForm', DynamicForm)
+
+Vue.component('MDEditor', MDEditor)
