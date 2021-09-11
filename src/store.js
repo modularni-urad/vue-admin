@@ -1,5 +1,5 @@
 /* global Vue, Vuex, localStorage, API, axios, _ */
-
+import getMenuItems from './menuItems.js'
 const KEY = '_opencomm_user_'
 const savedUser = localStorage.getItem(KEY)
 const loadedUsers = {}
@@ -14,7 +14,8 @@ export default function (router, cfg) {
     state: {
       user: savedUser && JSON.parse(savedUser),
       loginReqired: false,
-      cfg
+      cfg,
+      router
     },
     getters: {
       userLogged: state => {
@@ -28,6 +29,7 @@ export default function (router, cfg) {
           return false
         }
       },
+      menuItems: getMenuItems,
       hasMultipleLoginEPs: state => {
         const eps = cfg.login.endpoints
         return _.isArray(eps) && eps.length > 1

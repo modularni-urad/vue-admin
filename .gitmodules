@@ -4,3 +4,12 @@
 [submodule "src/modules/bbb-web-editor"]
 	path = src/modules/bbb-web-editor
 	url = https://github.com/otevrenamesta/bbb-web-editor
+[submodule "src/modules/modularni-urad-admin-components"]
+	path = src/modules/modularni-urad-admin-components
+	url = https://github.com/modularni-urad/admin-components
+[submodule "src/modules/jednani"]
+	path = src/modules/jednani
+	url = https://github.com/modularni-urad/jednani-webclient
+[submodule "src/modules/taskman"]
+	path = src/modules/taskman
+	url = https://github.com/modularni-urad/open-taskman-webclient

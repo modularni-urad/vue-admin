@@ -1,27 +1,45 @@
-const serviceRoutes = ['/', '/login']
+const MenuItem = {
+  props: ['item'],
+  template: `
+  <li class="nav-item">
+    <router-link class="nav-link" :to="item.to">{{ item.label }}</router-link>
+  </li>
+  `
+}
+
+const DropdownMenuItem = {
+  data: () => {
+    return {
+      open: false
+    }
+  },
+  props: ['item'],
+  methods: {
+    onClick: function (e) {
+      this.$data.open = !this.$data.open
+    },
+    select: function (i) {
+      this.$router.push(i.to)
+      this.$data.open = false
+    }
+  },
+  template: `
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="javascript:void(0);" @click="onClick">
+      {{ item.label }}
+    </a>
+    <div class="dropdown-menu" style="display: block;" v-if="open">
+      <a v-for="i,idx in item.children" :key="idx" 
+        href="javascript:void(0);" class="dropdown-item" @click="select(i)">
+        {{ i.label }}
+      </a>
+    </div>
+  </li>
+  `
+}
 
 export default {
-  computed: {
-    menuItems: function () {
-      const self = this
-      function _canIAcces(routeConfig) {
-        if (!routeConfig.accessGroups) return true
-        const required = routeConfig.accessGroups.split(',')
-        const i = _.intersection(required, self.$store.state.user.groups)
-        return i.length > 0
-      }
-      const r = _.filter(this.$router.options.routes, i => {
-        return _.indexOf(serviceRoutes, i.path) < 0 && _canIAcces(i.props.cfg)
-      })
-      return r
-    }
-  },
-  props: [],
-  methods: {
-    label: function (i) {
-      return _.get(i, ['cfg', 'label'], i.name)
-    }
-  },
+  components: { MenuItem, DropdownMenuItem },
   template: `
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <a class="navbar-brand" href="#"><i class="fas fa-home"></i></a>
@@ -32,9 +50,9 @@ export default {
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 
     <ul v-if="this.$store.getters.userLogged" class="navbar-nav mr-auto">
-      <li class="nav-item" v-for="(i, idx) in menuItems" :key="idx">
-        <router-link class="nav-link" :to="i.path">{{ label(i.props) }}</router-link>
-      </li>
+      <component :is="i.children ? 'DropdownMenuItem' : 'MenuItem'" 
+        v-for="(i, idx) in this.$store.getters.menuItems" :key="idx" 
+        :item="i" />
     </ul>
 
     <form class="form-inline my-2 my-lg-0">
