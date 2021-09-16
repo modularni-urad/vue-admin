@@ -7,17 +7,23 @@ import AppMenu from './components/menu.js'
 import Dashboard from './components/pages/dashboard.js'
 import Page from './components/page.js'
 import LoginScreen from './components/auth/login.js'
-import setupJednaniRoutes from './modules/jednani/index.js'
-import {createMenu} from './modules/jednani/index.js'
+import { initConfig } from './modules/modularni-urad-admin-components/entity/utils.js'
 
-import setupTaskmanRoutes from './modules/taskman/index.js'
-import { createMenu as createTaskMenu } from './modules/taskman/index.js'
+import { 
+  setupRoutes as setupJednaniRoutes,
+  createMenu as createJednaniMenu
+} from './modules/jednani/index.js'
+
+import {
+  setupRoutes as setupTaskmanRoutes,
+  createMenu as createTaskMenu
+} from './modules/taskman/index.js'
 
 export default async function init (mountpoint, settingsURL) {
   const req = await axios(settingsURL)
   const settings = jsyaml.load(req.data)
   settings.menuCreators = settings.newAdmin 
-    ? [createMenu, createTaskMenu]
+    ? [createJednaniMenu, createTaskMenu]
     : []
 
   const webRoutes = _.map(settings.routes, i => {
@@ -28,8 +34,8 @@ export default async function init (mountpoint, settingsURL) {
     routes: _.union(webRoutes, [
         { path: '/', component: Dashboard, name: 'home' },
       ],
-      await setupJednaniRoutes('/', { url: settings.jednani_api }),
-      await setupTaskmanRoutes('/taskman', { url: settings.taskman_api })
+      await setupJednaniRoutes('/', { url: settings.jednani_api }, initConfig),
+      await setupTaskmanRoutes('/taskman', { url: settings.taskman_api }, initConfig)
     )
   })
 
