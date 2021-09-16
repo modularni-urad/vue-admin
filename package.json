@@ -6,14 +6,13 @@
   "private": true,
   "scripts": {
     "start": "node --inspect dev/server.js",
+    "build2": "rollup -c rollup.config.js",
     "build": "rollup src/main.js --file dist/bundle.js --format iife --name initMUAdmin"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "rollup": "^1.29.1",
     "browser-sync": "^2.26.14",
-    "express": "^4.17.1",
-    "modularni-urad-admin-components": "github:modularni-urad/admin-components"
-  },
-  "dependencies": {
-    "rollup": "^1.29.1"
+    "express": "^4.17.1"
   }
 }
