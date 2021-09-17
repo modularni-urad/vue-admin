@@ -1,12 +1,8 @@
 const _loaded = {}
 const _promises = {}
 
-function load (id) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ data: { id: 42, jmeno: 'Vaclav Klecanda' } })
-    }, 1000)
-  })
+function load (uid, cfg) {
+  return axios.get(`${cfg.user_info_url}/${uid}`)
 }
 
 export default {
@@ -21,7 +17,7 @@ export default {
     this.loaded = this.uid in _loaded
     this.item = _loaded[this.uid] ? _loaded[this.uid] : null
     if (!(this.uid in _loaded)) {
-      const p = _promises[this.uid] || load(this.uid)
+      const p = _promises[this.uid] || load(this.uid, this.$store.state.cfg)
       p.then(res => {
         Object.assign(this.$data, { item: res.data, loaded: true })
         delete _promises[this.uid]
@@ -29,7 +25,7 @@ export default {
     }
   },
   template: `
-    <span v-if="loaded">{{ item.jmeno }}</span>
-    <i v-else class="fas fa-spinner fa-spin"></i>
+    <span v-if="this.uid && loaded">{{ item.jmeno }}</span>
+    <i v-else-if="this.uid" class="fas fa-spinner fa-spin"></i>
   `
 }
