@@ -35,7 +35,7 @@ export default async function init (mountpoint, settingsURL) {
         { path: '/', component: Dashboard, name: 'home' },
       ],
       await setupJednaniRoutes('/', { url: settings.jednani_api }, initConfig),
-      await setupTaskmanRoutes('/taskman', { url: settings.taskman_api }, initConfig)
+      await setupTaskmanRoutes('/taskman/', { url: settings.taskman_api }, initConfig)
     )
   })
 
