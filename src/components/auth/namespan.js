@@ -25,7 +25,7 @@ export default {
     }
   },
   template: `
-    <span v-if="this.uid && loaded">{{ item.jmeno }}</span>
+    <span v-if="this.uid && loaded">{{ item.name }}</span>
     <i v-else-if="this.uid" class="fas fa-spinner fa-spin"></i>
   `
 }
