@@ -11,8 +11,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.4",
-    "rollup": "^1.29.1",
     "browser-sync": "^2.26.14",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^2.0.1",
+    "rollup": "^1.29.1"
   }
 }

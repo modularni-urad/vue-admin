@@ -48,7 +48,7 @@ export default async function init (mountpoint, settingsURL) {
     template: `
     <div>
       <AppMenu />
-      <div class="container-notused mx-auto p-1">
+      <div class="container-fluid">
         <router-view :key="$route.fullPath"></router-view>
       </div>
       <b-modal v-model="$store.state.loginReqired" title="Přihlásit" hide-footer>
