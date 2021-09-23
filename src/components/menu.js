@@ -1,3 +1,5 @@
+import Notifications from './menu/notifications.js'
+
 const MenuItem = {
   props: ['item'],
   template: `
@@ -39,7 +41,7 @@ const DropdownMenuItem = {
 }
 
 export default {
-  components: { MenuItem, DropdownMenuItem },
+  components: { MenuItem, DropdownMenuItem, Notifications },
   template: `
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <a class="navbar-brand" href="#"><i class="fas fa-home"></i></a>
@@ -56,12 +58,13 @@ export default {
     </ul>
 
     <form class="form-inline my-2 my-lg-0">
+      <Notifications v-if="$store.getters.userLogged" />
       <button v-if="$store.getters.userLogged" class="btn btn-warning"
         v-on:click="$store.dispatch('logout')">
-        Odhlásit {{$store.state.user.email}}
+        odhlásit {{$store.state.user.name}} <i class="fas fa-sign-out-alt"></i>
       </button>
       <b-button v-else @click="$store.commit('showLogin')">
-        Přihlásit
+        přihlásit <i class="fas fa-sign-in-alt"></i>
       </b-button>
     </form>
 
