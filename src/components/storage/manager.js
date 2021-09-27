@@ -36,7 +36,7 @@ export default {
           const content = await loadAsBase64(data.file)
           await that.$store.dispatch('send', { 
             method: 'post', 
-            url: `${that.$props.cfg.storage_url}/api/${result.id}/${result.filename}`,
+            url: `${that.$props.cfg.upload_url}/${result.id}/${result.filename}`,
             data: { content }
           })
         }
