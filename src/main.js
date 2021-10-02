@@ -27,7 +27,14 @@ export default async function init (mountpoint, settingsURL) {
     : []
 
   const webRoutes = _.map(settings.routes, i => {
-    return { name: i.name, path: i.path, component: Page, props: i }
+    return { 
+      name: i.name, 
+      path: i.path, 
+      component: Page, 
+      props: route => {
+        return { component: i.component, query: route.query, cfg: i.cfg }
+      }
+    }
   })
 
   const router = new VueRouter({
