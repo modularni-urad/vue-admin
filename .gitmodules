@@ -13,3 +13,6 @@
 [submodule "src/modules/taskman"]
 	path = src/modules/taskman
 	url = https://github.com/modularni-urad/open-taskman-webclient
+[submodule "src/modules/modularni-urad-optionman-webclient"]
+	path = src/modules/modularni-urad-optionman-webclient
+	url = https://github.com/modularni-urad/optionman-webclient

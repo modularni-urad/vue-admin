@@ -19,12 +19,19 @@ import {
   createMenu as createTaskMenu
 } from './modules/taskman/index.js'
 
+import {
+  setupRoutes as setupOptionmanRoutes,
+  createMenu as createOptionmanMenu
+} from './modules/modularni-urad-optionman-webclient/index.js'
+
 export default async function init (mountpoint, settingsURL) {
   const req = await axios(settingsURL)
   const settings = jsyaml.load(req.data)
-  settings.menuCreators = settings.newAdmin 
+  settings.menuCreators = _.union([
+    createOptionmanMenu
+  ], settings.newAdmin 
     ? [createJednaniMenu, createTaskMenu]
-    : []
+    : [])
 
   const webRoutes = _.map(settings.routes, i => {
     return { 
@@ -42,7 +49,8 @@ export default async function init (mountpoint, settingsURL) {
         { path: '/', component: Dashboard, name: 'home' },
       ],
       await setupJednaniRoutes('/', { url: settings.jednani_api }, initConfig),
-      await setupTaskmanRoutes('/taskman/', { url: settings.taskman_api }, initConfig)
+      await setupTaskmanRoutes('/taskman/', { url: settings.taskman_api }, initConfig),
+      await setupOptionmanRoutes('/optionman/', { url: settings.optionman_api }, initConfig)
     )
   })
 
