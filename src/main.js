@@ -6,7 +6,7 @@ import Store from './store.js'
 import AppMenu from './components/menu.js'
 import Dashboard from './components/pages/dashboard.js'
 import LoginScreen from './components/auth/login.js'
-import EntityList from '../modules/modularni-urad-admin-components/entity/list.js'
+import EntityList from './modules/modularni-urad-admin-components/entity/list.js'
 import { initConfig } from './modules/modularni-urad-admin-components/entity/utils.js'
 
 export default async function init (mountpoint, settingsURL) {
