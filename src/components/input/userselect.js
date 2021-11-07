@@ -46,7 +46,7 @@ export default {
       @input="lookupUser"
       :background-variant-resolver="(user) => ((user.id % 2) == 0) ? 'light':'dark'"
     />
-    <NameSpan :uid="data[config.name]" :cfg="config" />
+    <NameSpan v-if="data[config.name]" :uid="data[config.name]" :cfg="config" />
 
   </b-form-group>
 </validation-provider>
