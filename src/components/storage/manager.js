@@ -1,51 +1,55 @@
-import EditList from '../entity/list.js'
-import { loadAsBase64 } from './fileForm.js'
-
 const FileActions = {
-  props: ['data', 'doEdit'],
+  props: ['query', 'cfg', 'row'],
+  methods: {
+    doEdit: function () {
+      const query = Object.assign({}, this.query, { _detail: this.row.filename })
+      this.$router.replace({ query })
+    }
+  },
   computed: {
     isImage: function () {
-      return this.$props.data.item.ctype.indexOf('image') >= 0
+      return this.row.ctype.indexOf('image') >= 0
+    },
+    muzuUpravit: function () {
+      // return this.$store.getters.isMember(this.row.group)
+      return true
     }
   },
   template: `
-  <div>
+  <td>
     <img v-if="isImage" style="display: inline-block;" 
-      :src="$store.getters.mediaUrl(data.item, 'w=150')" 
+      :src="$store.getters.mediaUrl(row.filename, 'w=150')" 
     />
-    <b-button size="sm" variant="primary" @click="doEdit(data.item)">
+    
+    <b-button v-if="muzuUpravit" size="sm" variant="primary" @click="doEdit(row)">
       <i class="fas fa-edit"></i> upravit
-    </b-button>
-  </div>
+    </b-button>        
+  </td>
   `
 }
-Vue.component('FileActions', FileActions)
 
 export default {
-  data: function () {
-    return {
-      saveHooks: {
-        prepare: async function (that, data) {
-          return data.file
-            ? Object.assign(_.omit(data, 'file'), { 
-                file: _.pick(data.file, 'type', 'name', 'size')
-              })
-            : data
-        },
-        finish: async function (that, data, result) {
-          const content = await loadAsBase64(data.file)
-          await that.$store.dispatch('send', { 
-            method: 'post', 
-            url: `${that.$props.cfg.upload_url}/${result.id}/${result.filename}`,
-            data: { content }
-          })
-        }
-      }
-    }
-  },
-  props: ['cfg'],
-  components: { EditList },
+  props: ['cfg', 'query'],
+  components: { FileActions },
   template: `
-<EditList :cfg="cfg" :saveHooks="$data.saveHooks" actionsComponent="FileActions" />
+  <ACListView :query="query" :cfg="cfg">
+
+    <template v-slot:breadcrumb="{ cfg }">
+      <b-breadcrumb-item active>media</b-breadcrumb-item>
+    </template>
+
+    <template v-slot:tbody="{ items, fields }">
+
+      <tr v-for="row,rowidx in items" :key="rowidx">
+        <td>{{ row.filename }}</td>
+        <td>{{ row.nazev }}</td>
+        <td>{{ row.tags }}</td>
+        <td>{{ row.ctype }}</td>
+        <td>{{ row.size }}</td>        
+        <FileActions key="actions" :query="query" :row="row" :cfg="cfg" />
+      </tr>
+
+    </template>
+  </ACListView>
   `
 }
