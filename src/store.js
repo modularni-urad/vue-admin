@@ -7,6 +7,7 @@ const loadedUsers = {}
 Vue.filter('username', function (uid) {
   return loadedUsers[uid] || 'unknown'
 })
+const isVector = (url) => url.match(/.*.svg$/)
 
 export default function (router, cfg) {
   //
@@ -35,11 +36,12 @@ export default function (router, cfg) {
         return _.isArray(eps) && eps.length > 1
       },
       mediaUrl: (state) => (media, params = null) => {
-        const murl = _.isString(media)
-          ? encodeURIComponent(media)
-          : `${cfg.cdn}/${media.id}/${media.filename}`
-        if (!params) return murl
-        return `${cfg.cdn}/api/resize/?url=${murl}&${params}`
+        const murl = media.match(/^https?:\/\//) ? media : `${cfg.cdn}/${media}`
+        if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) {
+          // je to vektor, nebo nechci modifier
+          return murl
+        }
+        return `${cfg.cdnapi}/resize/?url=${encodeURIComponent(murl)}&${params}`
       }
     },
     mutations: {

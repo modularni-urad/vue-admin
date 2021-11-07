@@ -7,12 +7,3 @@
 [submodule "src/modules/modularni-urad-admin-components"]
 	path = src/modules/modularni-urad-admin-components
 	url = https://github.com/modularni-urad/admin-components
-[submodule "src/modules/jednani"]
-	path = src/modules/jednani
-	url = https://github.com/modularni-urad/jednani-webclient
-[submodule "src/modules/taskman"]
-	path = src/modules/taskman
-	url = https://github.com/modularni-urad/open-taskman-webclient
-[submodule "src/modules/modularni-urad-optionman-webclient"]
-	path = src/modules/modularni-urad-optionman-webclient
-	url = https://github.com/modularni-urad/optionman-webclient
