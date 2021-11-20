@@ -1,5 +1,5 @@
 /* global Vue, VueRouter */
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 import './vuecustoms.js'
 import Store from './store.js'
 

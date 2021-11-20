@@ -62,15 +62,14 @@ export default function (router, cfg) {
       },
       login: async function (ctx, opts) {
         try {
-          const reqOpts = { withCredentials: false }
           const eps = cfg.login.endpoints
           const url = this.getters.hasMultipleLoginEPs 
             ? opts.endpoint 
             : _.isArray(eps) ? eps[0].value : eps
           const data = _.pick(opts, 'username', 'password')
-          const loginReq = await axios.post(url, data, reqOpts)
+          const loginReq = await axios.post(url + '?token=1', data)
           const profile = loginReq.data
-          if (loginReq.headers['bearer']) profile.token = loginReq.headers['bearer']
+          if (loginReq.headers['token']) profile.token = loginReq.headers['token']
           this.commit('profile', profile)
           this.commit('hideLogin')
           return loginReq.data
