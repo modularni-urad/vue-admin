@@ -10,7 +10,7 @@ export default {
       return
     }
     this.load()
-    setInterval(this.load, 10000)
+    setInterval(this.load, this.$store.state.cfg.notifyer_interval || 60000)
   },
   methods: {
     load: async function () {
