@@ -69,7 +69,6 @@ export default function (router, cfg) {
           const data = _.pick(opts, 'username', 'password')
           const loginReq = await axios.post(url + '?token=1', data)
           const profile = loginReq.data
-          if (loginReq.headers['token']) profile.token = loginReq.headers['token']
           this.commit('profile', profile)
           this.commit('hideLogin')
           return loginReq.data
@@ -89,7 +88,7 @@ export default function (router, cfg) {
         }
       },
       send: function (ctx, opts) {
-        this.state.user.token && Object.assign(opts, {  // for debug only
+        this.state.user.token && Object.assign(opts, {
           headers: { 'Authorization': `Bearer ${this.state.user.token}`}
         })
         return axios(opts)
