@@ -2,6 +2,7 @@
 // axios.defaults.withCredentials = true
 import './vuecustoms.js'
 import Store from './store.js'
+import loadSettings from './settings.js'
 
 import AppMenu from './components/menu.js'
 import Dashboard from './components/pages/dashboard.js'
@@ -10,8 +11,7 @@ import EntityList from './modules/modularni-urad-admin-components/entity/list.js
 import { initConfig } from './modules/modularni-urad-admin-components/entity/utils.js'
 
 export default async function init (mountpoint, settingsURL) {
-  const req = await axios(settingsURL)
-  const settings = jsyaml.load(req.data)
+  const settings = await loadSettings(settingsURL)
   const routes = []
   settings.menuCreators = []
 
