@@ -18,7 +18,7 @@ export default async function init (mountpoint, settingsURL) {
   const apps = await Promise.all(_.map(settings.apps, async appcfg => {
     const mod = await import(appcfg.module)
     await mod.setupRoutes(routes, appcfg.path, appcfg, initConfig)
-    settings.menuCreators.push(mod.createMenu)
+    settings.menuCreators.push(mod.createMenu.bind(appcfg))
   }))
   const entities = await Promise.all(_.map(settings.routes, async i => {
     await initConfig(i.cfg)
