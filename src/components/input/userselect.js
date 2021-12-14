@@ -5,12 +5,12 @@ export default {
       users: []
     }
   },
-  props: ['config', 'disabled', 'data'],
+  props: ['config', 'disabled', 'data', 'onUserSelect'],
   methods: {
     lookupUser: function() {
       // in practice this action should be debounced
-      const search_url = this.$store.state.cfg.user_search_url
-      fetch(`${search_url}${this.query}`)
+      const url = this.config.user_search_url.replace('{{QUERY}}', this.query)
+      fetch(url)
         .then(response => {
           return response.json()
         })
@@ -19,8 +19,11 @@ export default {
         })
     },
     select: function ($event) {
-      const { data, config } = this.$props
-      data[config.name] = $event.id
+      if (this.onUserSelect) this.onUserSelect($event)
+      else {
+        const { data, config } = this.$props
+        data[config.name] = $event.id
+      }
     },
     serialize: function (item) {
       return `${item.name} (${item.username})`
