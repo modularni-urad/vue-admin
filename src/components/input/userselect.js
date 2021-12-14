@@ -5,7 +5,7 @@ export default {
       users: []
     }
   },
-  props: ['config', 'disabled', 'data', 'onUserSelect'],
+  props: ['config', 'disabled'],
   methods: {
     lookupUser: function() {
       // in practice this action should be debounced
@@ -18,26 +18,15 @@ export default {
           this.users = data
         })
     },
-    select: function ($event) {
-      if (this.onUserSelect) this.onUserSelect($event)
-      else {
-        const { data, config } = this.$props
-        data[config.name] = $event.id
-      }
+    select: function (value) {
+      this.$emit('input', value)
     },
     serialize: function (item) {
       return `${item.name} (${item.username})`
     }
   },
   components: { 'vue-typeahead-bootstrap': VueTypeaheadBootstrap },
-  template: `
-<validation-provider v-bind:rules="config.rules" v-slot="{ errors }">
-  <b-form-group
-    :state="errors.length === 0"
-    :label="config.label"
-    :invalid-feedback="errors[0]"
-  >
-    
+  template: `    
     <vue-typeahead-bootstrap
       v-model="query"
       :disabled="disabled"
@@ -49,9 +38,5 @@ export default {
       @input="lookupUser"
       :background-variant-resolver="(user) => ((user.id % 2) == 0) ? 'light':'dark'"
     />
-    <NameSpan v-if="data[config.name]" :uid="data[config.name]" :cfg="config" />
-
-  </b-form-group>
-</validation-provider>
   `
 }
