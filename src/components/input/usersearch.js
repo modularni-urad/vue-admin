@@ -9,7 +9,9 @@ export default {
   methods: {
     lookupUser: function() {
       // in practice this action should be debounced
-      const url = this.config.user_search_url.replace('{{QUERY}}', this.query)
+      if (this.query.length === 0) return
+      const searchURL = this.config.user_search_url || this.$store.state.cfg.user_search_url
+      const url = searchURL.replace('{{QUERY}}', this.query)
       fetch(url)
         .then(response => {
           return response.json()
