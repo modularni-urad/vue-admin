@@ -1,3 +1,5 @@
+import UserSearch from './usersearch.js'
+
 export default {
   data() {
     return {
@@ -5,38 +7,26 @@ export default {
       users: []
     }
   },
-  props: ['config', 'disabled'],
-  methods: {
-    lookupUser: function() {
-      // in practice this action should be debounced
-      const url = this.config.user_search_url.replace('{{QUERY}}', this.query)
-      fetch(url)
-        .then(response => {
-          return response.json()
-        })
-        .then(data => {
-          this.users = data
-        })
-    },
-    select: function (value) {
-      this.$emit('input', value)
-    },
-    serialize: function (item) {
-      return `${item.name} (${item.username})`
+  props: ['config', 'disabled', 'data'],
+  methods: {    
+    select: function ($event) {
+      const { data, config } = this.$props
+      data[config.name] = $event.id
     }
   },
-  components: { 'vue-typeahead-bootstrap': VueTypeaheadBootstrap },
-  template: `    
-    <vue-typeahead-bootstrap
-      v-model="query"
-      :disabled="disabled"
-      :ieCloseFix="false"
-      :data="users"
-      :serializer="serialize"
-      @hit="select"
-      :placeholder="config.placeholder || 'prohledat uživatele'"
-      @input="lookupUser"
-      :background-variant-resolver="(user) => ((user.id % 2) == 0) ? 'light':'dark'"
-    />
+  components: { UserSearch },
+  template: `
+<validation-provider v-bind:rules="config.rules" v-slot="{ errors }">
+  <b-form-group
+    :state="errors.length === 0"
+    :label="config.label"
+    :invalid-feedback="errors[0]"
+  >
+    
+    <UserSearch :config="config" :disabled="disabled" @input="select" />
+    <NameSpan v-if="data[config.name]" :uid="data[config.name]" :cfg="config" />
+
+  </b-form-group>
+</validation-provider>
   `
 }

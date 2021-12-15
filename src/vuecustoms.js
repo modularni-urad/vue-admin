@@ -21,6 +21,8 @@ Vue.component('ACListView', ListView)
 Vue.component('ACDynamicForm', ItemForm)
 Vue.component('ACDetailModal', DetailModal)
 
+import UserSearch from './components/input/usersearch.js'
+Vue.component('user-search', UserSearch)
 import UserSelect from './components/input/userselect.js'
 Vue.component('user-select', UserSelect)
 
