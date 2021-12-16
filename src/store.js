@@ -1,12 +1,7 @@
-/* global Vue, Vuex, localStorage, API, axios, _ */
+import { loadScript, loadStyle } from './modules/modularni-urad-admin-components/script_service.js'
 import getMenuItems from './menuItems.js'
 const KEY = '_opencomm_user_'
 const savedUser = localStorage.getItem(KEY)
-const loadedUsers = {}
-
-Vue.filter('username', function (uid) {
-  return loadedUsers[uid] || 'unknown'
-})
 const isVector = (url) => url.match(/.*.svg$/)
 
 export default function (router, cfg) {
@@ -100,6 +95,12 @@ export default function (router, cfg) {
         } catch (_) {}
       },
       handleError: function (ctx, opts) {
+      },
+      loadScript: function (ctx, src) {
+        return loadScript(src)
+      },
+      loadStyle: function (ctx, src) {
+        return loadStyle(src)
       }
     }
   })

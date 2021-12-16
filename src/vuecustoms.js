@@ -75,3 +75,6 @@ VeeValidate.extend('required', VeeValidateRules.required)
 VeeValidate.extend(WITHOUT_DIACRITICS_VALIDATOR_NAME, WITHOUT_DIACRITICS_VALIDATOR)
 
 Vue.component('MDEditor', MDEditor)
+
+import positionInput from './modules/modularni-urad-admin-components/input/gps_shapes.js'
+Vue.component('positionInput', positionInput)
