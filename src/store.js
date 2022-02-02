@@ -1,6 +1,6 @@
 import { loadScript, loadStyle } from './modules/modularni-urad-admin-components/script_service.js'
 import getMenuItems from './menuItems.js'
-const KEY = '_opencomm_user_'
+const KEY = window.location.hostname + '_modurad_user_'
 const savedUser = localStorage.getItem(KEY)
 const isVector = (url) => url.match(/.*.svg$/)
 
