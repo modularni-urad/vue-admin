@@ -5,6 +5,8 @@ function getLabel (i) {
 }
 
 export default function (state) {
+
+  const items = {}
   
   function _canIAcces(routeConfig) {
     if (!routeConfig.accessGroups) return true
@@ -12,17 +14,27 @@ export default function (state) {
     const i = _.intersection(required, state.user.groups)
     return i.length > 0
   }
-  
-  const r = _.reduce(state.cfg.routes, (acc, i) => {
-    if (_canIAcces(i.cfg)) {
-      acc.push({ label: getLabel(i), to: { name: i.name } })
+  function add(cfg, item = null) {
+    item = item || { label: getLabel(cfg), to: { name: cfg.name } }
+    if (cfg.group) {
+      _.has(items, cfg.group)
+        ? items[cfg.group].children.push(item)
+        : items[cfg.group] = { label: cfg.group, children: [ item ] }
+    } else {
+      items[cfg.path] = item
     }
-    return acc
-  }, [])
+  }  
+  
+  _.each(state.cfg.routes, i => {
+    if (_canIAcces(i.cfg)) {
+      add(i) 
+    }
+  })
 
   state.cfg.menuCreators.map(i => {
-    const c = i(state.user)
-    c && r.push(c)
+    const { fn, cfg } = i
+    const c = fn.bind(cfg)(state.user, cfg)
+    c && add(cfg, c)
   })
-  return r
+  return _.values(items)
 }
