@@ -17,6 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.1.2/vuex.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.1.3/vue-router.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-clipboard2/0.3.3/vue-clipboard.min.js" integrity="sha512-Zox2uAcIUjsh757teov0Hd1uGNCbmoL5RgnX0N8Vusp/fLe4STA2vsWfm28vrvd83tzlmZhJfa4zTPqlN3sW7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-markdown/2.2.4/vue-markdown.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue-treeview@1.0.8/dist/bootstrap-vue-treeview.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js" integrity="sha512-dYHhQSvQ3Lepc2xDidh80aADfrIAaVTs52W5JSFlE47SJgcwD+YY+iY0XmXD9UX3k0YOPvoyugS/ieGjpu5M/Q==" crossorigin="anonymous"></script>
@@ -60,7 +62,7 @@
 
     <script type="module">
       import initMUAdmin from './main.js'
-      var API = './settings.yaml'
+      var API = 'https://modurad.otevrenamesta.cz/_admin/omstredni/settings.yaml'
       initMUAdmin('#app', API)
     </script>
   </head>
