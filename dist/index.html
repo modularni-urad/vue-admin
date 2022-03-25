@@ -73,8 +73,8 @@
       <a href="https://www.google.com/intl/cs_CZ/chrome/">Chrome</a>.
     <![endif]-->
     <!--[if !IE]><!-->
-    <script src="bundle.js"></script>
-    <script>
+    <script type="module">
+      import initMUAdmin from 'https://files.vxk.cz/appmodules/vue-admin/src/main.js'
       initMUAdmin('#app', 'settings.json')
     </script>
     <!--<![endif]-->
