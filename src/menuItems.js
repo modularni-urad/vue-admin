@@ -34,7 +34,7 @@ export default function (state) {
   state.cfg.menuCreators.map(i => {
     const { fn, cfg } = i
     const c = fn.bind(cfg)(state.user, cfg)
-    c && add(cfg, c)
+    c && c.length ? c.map(i => add(cfg, i)) : add(cfg, c)
   })
   return _.values(items)
 }
