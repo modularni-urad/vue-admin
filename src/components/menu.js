@@ -59,10 +59,18 @@ export default {
 
     <form class="form-inline my-2 my-lg-0">
       <Notifications v-if="$store.getters.userLogged" />
-      <button v-if="$store.getters.userLogged" class="btn btn-warning"
-        v-on:click="$store.dispatch('logout')">
-        odhlásit {{$store.state.user.name}} <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <b-dropdown
+        v-if="$store.getters.userLogged"
+        variant="danger"
+        :text="$store.state.user.name"
+      >
+        <b-dropdown-item @click.prevent="$store.dispatch('changepwd')">
+          změnit si heslo
+        </b-dropdown-item>
+        <b-dropdown-item @click.prevent="$store.dispatch('logout')">
+          odhlásit <i class="fas fa-sign-out-alt"></i>
+        </b-dropdown-item>
+      </b-dropdown>
       <b-button v-else @click="$store.commit('showLogin')">
         přihlásit <i class="fas fa-sign-in-alt"></i>
       </b-button>

@@ -1,6 +1,6 @@
 import { loadScript, loadStyle } from './modules/modularni-urad-admin-components/script_service.js'
 import getMenuItems from './menuItems.js'
-const KEY = window.location.hostname + '_modurad_user_'
+const KEY = window.location.hostname + window.location.pathname + '_modurad_user_'
 const savedUser = localStorage.getItem(KEY)
 const isVector = (url) => url.match(/.*.svg$/)
 
@@ -54,6 +54,16 @@ export default function (router, cfg) {
     actions: {
       toast: function (ctx, opts) {
         Vue.$toast.open(opts)
+      },
+      changepwd: async function (ctx, opts) {
+        const newPwd = prompt('zadejte nové heslo')
+        if (!newPwd) return
+        await this.dispatch('send', {
+          url: `${ctx.state.cfg.consts.ORGAPI}/userman/chpasswd/${this.state.user.id}`,
+          method: 'put',
+          data: { password: newPwd }
+        })
+        this.dispatch('toast', { message: 'heslo změněno' })
       },
       login: async function (ctx, opts) {
         try {
