@@ -27,11 +27,8 @@ export default {
   //   this.$data.loading = false
   // },
   methods: {
-    imgURL: function (i) {
-      return `${i.id}/${i.filename}`
-    },
     imgURLSmall: function (i) {
-      return `${this.$props.storage_url}${i.id}/${i.filename}?w=200`
+      return this.$store.getters.mediaUrl(i.filename, 'w=150')
     }
   },
   template: `
@@ -39,7 +36,7 @@ export default {
     <img class="img-thumbnail img-fluid" v-for="i in images" 
       :src="imgURLSmall(i)" :alt="i.nazev" 
       style="width: 8em;"
-      @click="onSelect(imgURL(i))" />
+      @click="onSelect(i.filename)" />
   </div>
   `
 }

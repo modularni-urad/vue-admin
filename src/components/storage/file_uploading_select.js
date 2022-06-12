@@ -1,5 +1,5 @@
 import storageBrowser from './browser.js'
-import storageUploader from './uploader.js'
+// import storageUploader from './uploader.js'
 
 export default {
   data: () => {
@@ -17,7 +17,7 @@ export default {
       this.$props.data[this.$props.config.name] = url
     }
   },
-  components: { storageBrowser, storageUploader },
+  components: { storageBrowser },
   template: `
 <validation-provider v-bind:rules="config.rules" v-slot="{ errors }">
   <b-form-group
@@ -37,9 +37,6 @@ export default {
         <b-button variant="primary" v-b-modal.modal-search>
           <i class="fas fa-search"></i>
         </b-button>
-        <b-button variant="secondary" v-b-modal.modal-upload>
-          <i class="fas fa-upload"></i>
-        </b-button>
       </div>
     </div>
   </b-form-group>
@@ -47,11 +44,6 @@ export default {
   <b-modal size="lg" id="modal-search" title="Vyhledat v úložišti">
     <storageBrowser 
       :onSelect="onSelect.bind(this, 'modal-search')"
-      :config="config" />
-  </b-modal>
-  <b-modal size="lg" id="modal-upload" title="Nahrát do úložiště" hide-footer>
-    <storageUploader 
-      :onSelect="onSelect.bind(this, 'modal-upload')"
       :config="config" />
   </b-modal>
 

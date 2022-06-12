@@ -37,7 +37,7 @@ export default {
       }
       const res = await axios.get(this.$props.config.fileindex_url, { params: {
         filter: JSON.stringify(filter),
-        fields: 'id,filename,nazev'
+        fields: 'filename,nazev'
       }})
       this.$data.found = res.data
       this.$data.loading = false
